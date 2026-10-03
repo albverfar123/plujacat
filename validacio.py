@@ -122,7 +122,10 @@ def extreure_parelles(daily_dir="acumulats_diaris", nomes_noves=True):
         if dia in ja_fetes or not os.path.exists(js):
             continue
         with xr.open_dataset(nc) as ds:
-            camp = ds["precipitacio_acumulada"].values
+            # Fem servir sempre l'acumulat amb la taula ORIGINAL (sense calibrar), perquè les
+            # parelles siguin comparables al llarg del temps i no depenguin de la calibració
+            var = "precipitacio_original" if "precipitacio_original" in ds else "precipitacio_acumulada"
+            camp = ds[var].values
             lats, lons = ds["lat"].values, ds["lon"].values
             n_img = _n_imatges(daily_dir, dia, ds)
         with open(js, encoding="utf-8") as f:

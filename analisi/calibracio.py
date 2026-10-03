@@ -182,10 +182,14 @@ def correccio_mfb(df, col_radar, min_mm=0.5, loo=True):
     return out
 
 
-def correccio_local(df, col_radar, min_mm=0.5, radi_km=30, potencia=2, loo=True, clip=(0.1, 10)):
+def correccio_local(df, col_radar, min_mm=0.5, radi_km=30, potencia=2, loo=True, clip=(0.1, 10),
+                    pes_mfb_km=None):
     """Correcció local diària: s'interpola (IDW) el log del quocient obs/radar de les
     estacions properes (dins radi_km). Si no n'hi ha cap, es fa servir el mean field bias.
-    Amb loo=True, l'estació avaluada no participa en la seva pròpia correcció."""
+    Amb loo=True, l'estació avaluada no participa en la seva pròpia correcció.
+    Amb pes_mfb_km (variant del pipeline, calibracio_radar.py), el biaix mitjà del dia entra a la
+    mitjana com una estació més amb pes 1/pes_mfb_km^2: la correcció passa de manera contínua
+    de local (prop d'estacions) a biaix mitjà (lluny), sense salts al límit del radi."""
     mfb = correccio_mfb(df, col_radar, min_mm, loo)
     out = np.full(len(df), np.nan)
     for _, g in df.groupby("data"):
@@ -201,8 +205,14 @@ def correccio_local(df, col_radar, min_mm=0.5, radi_km=30, potencia=2, loo=True,
                 D[pos, np.arange(len(pos))] = np.inf
             W = np.where(D <= radi_km, 1.0 / np.maximum(D, 1.0) ** potencia, 0.0)
             sw = W.sum(axis=1)
-            te = sw > 0
-            corr[te] = r[te] * np.exp((W[te] @ lr) / sw[te])
+            if pes_mfb_km:
+                w0 = 1.0 / pes_mfb_km ** potencia
+                f_mfb = np.where(r > 0, corr / np.where(r > 0, r, 1), 1.0)
+                lm = np.log(np.clip(f_mfb, *clip))
+                corr = r * np.exp((W @ lr + w0 * lm) / (sw + w0))
+            else:
+                te = sw > 0
+                corr[te] = r[te] * np.exp((W[te] @ lr) / sw[te])
         out[idx] = corr
     return out
 

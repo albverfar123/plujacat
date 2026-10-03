@@ -1,9 +1,0 @@
-RESUM SETMANAL: 2026-08-17 a 2026-08-23
---------------------------------------------------
-20260817: PLUJA      -> Vàlid: Viladrau (11.1 mm)
-20260818: ANTICICLÓ  -> Màxim: Montesquiu (0.8 mm)
-20260819: PLUJA      -> Vàlid: Vielha - Elipòrt (17.8 mm)
-20260820: PLUJA      -> Vàlid: Boí (2.537 m) (37.0 mm)
-20260821: PLUJA      -> Vàlid: Torredembarra (24.1 mm)
-20260822: PLUJA      -> Vàlid: el Vendrell (129.4 mm)
-20260823: PLUJA      -> Vàlid: el Port del Comte (2.288 m) (6.7 mm)

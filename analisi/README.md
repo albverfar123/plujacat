@@ -38,11 +38,20 @@ Aquesta carpeta documenta com s'ha avaluat i millorat l'estimació de pluja de P
 
 ![Biaix per estació abans i després](figures/03_biaix_espacial_corregit.png)
 
-## Proposta per al pipeline (encara no aplicada)
+## Aplicació al pipeline
 
-1. Fer servir la taula ajustada ([`resultats/taula_colors_proposada.json`](resultats/taula_colors_proposada.json)) i normalitzar per les imatges que s'han pogut descarregar cada dia.
-2. Corregir cada acumulat diari amb les estacions XEMA del mateix dia: interpolar el quocient estació/radar dins de 30 km i, on no hi hagi estacions a prop, aplicar el biaix mitjà del dia.
-3. Calcular els setmanals i mensuals sumant els diaris corregits.
+Des del 3 d'octubre de 2026, els acumulats diaris es calculen així (`calibracio_radar.py`, paràmetres a [`config_calibracio.json`](../config_calibracio.json)):
+
+1. Cada imatge de 6 min es converteix amb la taula ajustada. Els fitxers de `dades_radar/` continuen guardant els valors originals, així que es pot recalibrar en el futur.
+2. L'acumulat es normalitza per les imatges descarregades (240/dia).
+3. Es corregeix amb les estacions XEMA del mateix dia. La correcció és local, en un radi de 30 km, i el biaix mitjà del dia hi entra com una estació més. Així, lluny de les estacions, la correcció passa de manera contínua al biaix mitjà, sense "cercles" al mapa (variant validada al final del notebook 03).
+4. Els setmanals i mensuals sumen aquests diaris corregits.
+
+Si les estacions d'un dia encara no estan disponibles, el diari es desa amb la taula ajustada però sense corregir (`correccio = pendent`). La correcció s'aplica automàticament en una execució posterior.
+
+Cada NetCDF diari conté tres variables: `precipitacio_acumulada` (el producte final), `precipitacio_radar` (només la taula ajustada) i `precipitacio_original` (la taula manual antiga). Les parelles de validació (`validacio/parelles`) es calculen sempre amb `precipitacio_original`, perquè no depenguin de la calibració.
+
+Els diaris des de l'1 d'agost s'han reprocessat amb la calibració (`eines/reprocessar_diaris.py`), i els setmanals i mensuals d'agost i setembre es regeneren a partir d'aquests diaris. Els setmanals i mensuals anteriors (de febrer a juliol) continuen amb el mètode antic.
 
 **Limitacions:**
 - Una correcció multiplicativa no pot crear pluja on el radar marca 0.
@@ -57,4 +66,4 @@ pip install -r analisi/requirements-analisi.txt
 cd analisi && jupyter nbconvert --to notebook --execute --inplace 0*.ipynb
 ```
 
-`calibracio.py` conté les funcions compartides (càrrega de dades, mètriques, ajust de la taula i correccions). El pipeline les podrà reutilitzar quan s'apliqui la calibració.
+`calibracio.py` conté les funcions compartides (càrrega de dades, mètriques, ajust de la taula i correccions). La versió operativa (només numpy) és `calibracio_radar.py`, a l'arrel del repo.

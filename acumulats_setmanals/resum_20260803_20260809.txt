@@ -1,9 +1,0 @@
-RESUM SETMANAL: 2026-08-03 a 2026-08-09
---------------------------------------------------
-20260803: PLUJA      -> Vàlid: el Port del Comte (2.288 m) (57.5 mm)
-20260804: PLUJA      -> Vàlid: Montesquiu (15.3 mm)
-20260805: ANTICICLÓ  -> Màxim: Guardiola de Berguedà (0.1 mm)
-20260806: PLUJA      -> Vàlid: Montsec d'Ares (1.571 m) (78.7 mm)
-20260807: PLUJA      -> Vàlid: Guardiola de Berguedà (61.9 mm)
-20260808: PLUJA      -> Vàlid: Boí (2.537 m) (58.6 mm)
-20260809: PLUJA      -> Vàlid: Montsec d'Ares (1.571 m) (4.0 mm)

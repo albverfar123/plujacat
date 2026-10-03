@@ -11,6 +11,7 @@ import json
 import requests
 import csv
 import validacio
+import calibracio_radar
 
 # --- CONFIGURACIÓ API METEOCAT ---
 # La clau es llegeix del secret del repositori (Settings > Secrets > Actions > METEOCAT_API_KEY)
@@ -21,7 +22,7 @@ TIMEOUT = 30
 
 OUTPUT_DIR = "dades_radar"
 DAILY_DIR = "acumulats_diaris"
-FACTOR_TEMPORAL = 0.1  # cada imatge representa ~6 minuts (mm/h * 0.1 h)
+CFG_CALIBRACIO = calibracio_radar.carregar_config()
 
 # Cache per no repetir crides a l'API quan es processen molts dies
 _cache_metadades = None
@@ -91,6 +92,14 @@ def get_stations_daily_data(date_obj):
     return dades_completes
 
 
+def correccio_pendent(path_nc):
+    try:
+        with xr.open_dataset(path_nc) as ds:
+            return ds.attrs.get("correccio") == "pendent"
+    except Exception:
+        return False
+
+
 def dies_pendents():
     """Retorna tots els dies anteriors a avui (UTC) que tenen fitxers de radar sense processar,
     més el dia d'ahir (per assegurar que sempre es descarreguen les estacions)."""
@@ -110,13 +119,62 @@ def dies_pendents():
     # Dies recents sense fitxer d'estacions (p. ex. si l'API va fallar)
     for i in range(1, 31):
         d = avui - timedelta(days=i)
-        if os.path.exists(os.path.join(DAILY_DIR, f"acumulat_{d:%Y%m%d}.nc")) and \
-           not os.path.exists(os.path.join(DAILY_DIR, f"estacions_{d:%Y%m%d}.json")):
+        nc = os.path.join(DAILY_DIR, f"acumulat_{d:%Y%m%d}.nc")
+        if os.path.exists(nc) and (
+                not os.path.exists(os.path.join(DAILY_DIR, f"estacions_{d:%Y%m%d}.json"))
+                or correccio_pendent(nc)):
             dies.add(d)
     return sorted(dies)
 
 
-def process_radar_day(dia_str):
+def desar_acumulat(dia_str, lat, lon, original, calibrat, n_imatges, fonts, estacions):
+    """Desa l'acumulat diari (NetCDF + PNG + fonts) aplicant la calibració.
+
+    Variables del NetCDF:
+      - precipitacio_acumulada: producte final (taula calibrada + correcció amb estacions).
+        És la que fan servir el mapa, el setmanal i el mensual.
+      - precipitacio_radar: només taula calibrada (normalitzada per imatges), sense estacions.
+        Permet aplicar la correcció més tard si les estacions encara no estan disponibles.
+      - precipitacio_original: acumulat amb la taula original, igual que abans de la calibració.
+        Es manté per a la validació (validacio/parelles), perquè no depengui de la calibració.
+    """
+    lat = np.asarray(lat)
+    lon = np.asarray(lon)
+    cfg = CFG_CALIBRACIO
+    if estacions and cfg["correccio_estacions"].get("activa", True):
+        final, info = calibracio_radar.corregir_amb_estacions(calibrat, lat, lon, estacions, cfg)
+    else:
+        final, info = calibrat.copy(), {"correccio": "pendent"}
+
+    attrs = {
+        "description": f"Acumulat diari {dia_str}", "units": "mm", "date": dia_str,
+        "files_count": int(n_imatges), "resolution_min": 6,
+        "calibracio_versio": cfg["versio"],
+        "calibracio": "taula ajustada (config_calibracio.json) + correccio local amb estacions XEMA",
+    }
+    attrs.update({f"correccio_{k}" if not k.startswith("correccio") else k: v for k, v in info.items()})
+    enc = {v: {"zlib": True, "complevel": 4} for v in
+           ["precipitacio_acumulada", "precipitacio_radar", "precipitacio_original"]}
+    ds = xr.Dataset(
+        {"precipitacio_acumulada": (["lat", "lon"], final.astype("f4")),
+         "precipitacio_radar": (["lat", "lon"], calibrat.astype("f4")),
+         "precipitacio_original": (["lat", "lon"], original.astype("f4"))},
+        coords={"lon": lon, "lat": lat}, attrs=attrs)
+    nc_out_path = os.path.join(DAILY_DIR, f"acumulat_{dia_str}.nc")
+    ds.to_netcdf(nc_out_path, encoding=enc)
+    print(f"✅ NetCDF diari guardat: {nc_out_path} ({n_imatges} imatges, correcció: {info['correccio']}"
+          + (f", {info.get('estacions_usades', 0)} estacions, biaix mitjà {info.get('biaix_mitja')}" if info['correccio'] == 'local' else "")
+          + ")")
+
+    if fonts is not None:
+        with open(os.path.join(DAILY_DIR, f"fonts_acumulat_{dia_str}.txt"), "w") as f_txt:
+            f_txt.write(f"Resum de l'acumulat del dia {dia_str}:\nTotal fitxers processats: {n_imatges}\n\n")
+            f_txt.write("\n".join(fonts))
+
+    generate_daily_png(xr.DataArray(final), xr.DataArray(lon), xr.DataArray(lat), dia_str)
+
+
+def process_radar_day(dia_str, estacions):
     all_files_paths = sorted(
         os.path.join(OUTPUT_DIR, f) for f in os.listdir(OUTPUT_DIR)
         if f.startswith(f"radar_{dia_str}") and f.endswith(".nc")
@@ -124,47 +182,27 @@ def process_radar_day(dia_str):
 
     if not all_files_paths:
         print(f"ℹ️ No hi ha fitxers de radar pendents per al dia {dia_str}.")
-        return
+        return False
 
-    total_precip, lon, lat = None, None, None
+    acc = calibracio_radar.Acumulador(CFG_CALIBRACIO)
+    lon, lat = None, None
     used_files = []
     for file_path in all_files_paths:
         try:
             with xr.open_dataset(file_path) as ds:
-                data = ds['precipitacio'].fillna(0).load()
-                if total_precip is None:
-                    total_precip = data * FACTOR_TEMPORAL
-                    lon, lat = ds['lon'].load(), ds['lat'].load()
-                else:
-                    total_precip += data * FACTOR_TEMPORAL
+                acc.afegir(ds['precipitacio'].values)
+                if lon is None:
+                    lon, lat = ds['lon'].values, ds['lat'].values
                 used_files.append(os.path.basename(file_path))
         except Exception as e:
             print(f"⚠️ Error obrint {file_path}: {e}")
 
-    if total_precip is None:
+    if acc.n == 0:
         print(f"⚠️ Cap fitxer de radar llegible per al dia {dia_str}.")
-        return
+        return False
 
-    ds_daily = xr.Dataset(
-        {"precipitacio_acumulada": (["lat", "lon"], total_precip.values)},
-        coords={"lon": lon, "lat": lat},
-        attrs={
-            "description": f"Acumulat diari {dia_str}",
-            "units": "mm",
-            "date": dia_str,
-            "files_count": len(used_files),
-            "resolution_min": 6
-        }
-    )
-    nc_out_path = os.path.join(DAILY_DIR, f"acumulat_{dia_str}.nc")
-    ds_daily.to_netcdf(nc_out_path)
-    print(f"✅ NetCDF diari guardat: {nc_out_path} ({len(used_files)} fitxers)")
-
-    with open(os.path.join(DAILY_DIR, f"fonts_acumulat_{dia_str}.txt"), "w") as f_txt:
-        f_txt.write(f"Resum de l'acumulat del dia {dia_str}:\nTotal fitxers processats: {len(used_files)}\n\n")
-        f_txt.write("\n".join(used_files))
-
-    generate_daily_png(total_precip, lon, lat, dia_str)
+    original, calibrat = acc.resultat()
+    desar_acumulat(dia_str, lat, lon, original, calibrat, acc.n, used_files, estacions)
 
     # Recompte de classes de color al píxel de cada estació (abans d'esborrar els fitxers de 6 min)
     try:
@@ -179,18 +217,35 @@ def process_radar_day(dia_str):
             os.remove(f_path)
         except Exception as e:
             print(f"⚠️ No s'ha pogut eliminar {f_path}: {e}")
+    return True
+
+
+def corregir_pendent(dia_str, estacions):
+    """Si l'acumulat d'un dia es va desar sense correcció (estacions no disponibles),
+    l'aplica ara a partir de la variable precipitacio_radar."""
+    path = os.path.join(DAILY_DIR, f"acumulat_{dia_str}.nc")
+    if not estacions or not os.path.exists(path):
+        return
+    with xr.open_dataset(path) as ds:
+        if ds.attrs.get("correccio") != "pendent" or "precipitacio_radar" not in ds:
+            return
+        ds = ds.load()
+    print(f"🔁 Aplicant la correcció amb estacions pendent del {dia_str}")
+    desar_acumulat(dia_str, ds.lat.values, ds.lon.values, ds.precipitacio_original.values,
+                   ds.precipitacio_radar.values, ds.attrs.get("files_count", 0), None, estacions)
 
 
 def process_stations_day(dia_obj):
+    """Descarrega i desa les estacions del dia. Retorna la llista d'estacions o None si falla."""
     dia_str = dia_obj.strftime("%Y%m%d")
     try:
         estacions_data = get_stations_daily_data(dia_obj)
     except Exception as e:
         print(f"❌ Error obtenint dades d'estacions per al {dia_str}: {e}")
-        return False
+        return None
     if not estacions_data:
         print(f"⚠️ No s'han trobat dades d'estacions per al {dia_str}.")
-        return True
+        return []
 
     csv_path = os.path.join(DAILY_DIR, f"estacions_{dia_str}.csv")
     with open(csv_path, 'w', newline='', encoding='utf-8') as f:
@@ -200,7 +255,7 @@ def process_stations_day(dia_obj):
             writer.writerow([d['codi'], d['nom'], d['data'], d['pluja']])
     save_stations_geojson(estacions_data, os.path.join(DAILY_DIR, f"estacions_{dia_str}.json"))
     print(f"📍 Estacions guardades: {len(estacions_data)} ({dia_str})")
-    return True
+    return estacions_data
 
 
 def calculate_daily():
@@ -212,9 +267,12 @@ def calculate_daily():
     for dia_obj in dies:
         dia_str = dia_obj.strftime("%Y%m%d")
         print(f"\n===== {dia_str} =====")
-        process_radar_day(dia_str)
-        if not process_stations_day(dia_obj):
+        # Primer les estacions: calen per corregir el radar
+        estacions = process_stations_day(dia_obj)
+        if estacions is None:
             errors_estacions += 1
+        if not process_radar_day(dia_str, estacions):
+            corregir_pendent(dia_str, estacions)
 
     # Parelles radar-estació per a validació (dies amb acumulat i estacions)
     try:
