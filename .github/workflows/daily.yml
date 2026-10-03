@@ -3,7 +3,7 @@ name: Acumulat Diari Radar
 on:
   workflow_dispatch:
   schedule:
-    - cron: '17 1 * * *'   # cada dia a les 01:17 UTC (el radar del dia anterior ja és complet)
+    - cron: '37 7 * * *'   # 07:37 UTC = 09:37 (estiu) / 08:37 (hivern) hora catalana, després del cron de cron-job.org (08:03). Abans el Meteocat encara no ha publicat les estacions
 
 permissions:
   contents: write
