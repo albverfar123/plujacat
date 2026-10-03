@@ -30,6 +30,22 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # Descarrega les imatges de 6 min dels dies anteriors a avui (Releases radar-AAAAMMDD)
+      - name: Descarregar imatges de radar pendents
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p dades_radar
+          avui=$(date -u +%Y%m%d)
+          for tag in $(gh release list --limit 200 --json tagName --jq '.[].tagName' | grep -E '^radar-[0-9]{8}$' | sort); do
+            dia=${tag#radar-}
+            if [ "$dia" \< "$avui" ]; then
+              echo "⬇️ $tag"
+              gh release download "$tag" -D dades_radar -p 'radar_*.nc' --skip-existing
+            fi
+          done
+          echo "Fitxers a dades_radar: $(ls dades_radar | wc -l)"
+
       # Processa TOTS els dies pendents a dades_radar (no només ahir) i les estacions
       - name: Run daily accumulation
         env:
@@ -58,7 +74,8 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
           mkdir -p acumulats_mensuals validacio
-          git add -A dades_radar/ acumulats_diaris/ acumulats_setmanals/ acumulats_mensuals/ validacio/ bounds.json
+          git add -u dades_radar/   # només esborrats: les imatges noves ja no entren a git
+          git add -A acumulats_diaris/ acumulats_setmanals/ acumulats_mensuals/ validacio/ bounds.json
 
           if git diff --staged --quiet; then
             echo "No hi ha canvis per pujar."
@@ -73,3 +90,26 @@ jobs:
             sleep $((i * 10))
           done
           exit 1
+
+      # Després del push (si el push falla, les Releases del dia es conserven i es reintenta demà):
+      # puja el paquet diari comprimit a la Release mensual i esborra la Release del dia
+      - name: Arxivar imatges de radar
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          shopt -s nullglob
+          for f in arxiu_radar/radar_*.nc; do
+            dia=$(basename "$f" .nc | cut -c7-14)
+            mes=${dia:0:6}
+            arxiu="radar-arxiu-${mes}"
+            gh release view "$arxiu" >/dev/null 2>&1 || \
+              gh release create "$arxiu" --title "Arxiu radar ${mes:0:4}-${mes:4:2}" \
+                --notes "Imatges de radar de 6 min empaquetades per dia (format descrit a arxiu_radar.py)." || true
+            if gh release upload "$arxiu" "$f" --clobber; then
+              echo "📦 $(basename "$f") → $arxiu"
+              gh release delete "radar-${dia}" --yes --cleanup-tag 2>/dev/null && echo "🗑️ Release radar-${dia} esborrada" || true
+            else
+              echo "⚠️ No s'ha pogut pujar $f; la Release radar-${dia} es conserva"
+            fi
+          done

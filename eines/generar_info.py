@@ -15,7 +15,8 @@ ESTRUCTURA = """## Estructura del repositori · Estructura del repositorio · Re
 
 | | |
 |---|---|
-| `radar_to_nc.py` | Captura del radar cada 6 min → `dades_radar/` |
+| `radar_to_nc.py` | Captura del radar cada 6 min → Release del dia `radar-AAAAMMDD` |
+| `arxiu_radar.py` | Arxiu de les imatges de 6 min: un paquet comprimit per dia a les Releases mensuals `radar-arxiu-AAAAMM` |
 | `daily_accumulation.py` | Acumulat diari calibrat i corregit amb estacions → `acumulats_diaris/` |
 | `weekly_accumulation.py` · `monthly_accumulation.py` | Acumulats setmanals i mensuals → `acumulats_setmanals/`, `acumulats_mensuals/` |
 | `calibracio_radar.py` · `config_calibracio.json` | Calibració operativa (taula de colors + correcció amb estacions) |

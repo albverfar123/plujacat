@@ -12,6 +12,7 @@ import requests
 import csv
 import validacio
 import calibracio_radar
+import arxiu_radar
 
 # --- CONFIGURACIÓ API METEOCAT ---
 # La clau es llegeix del secret del repositori (Settings > Secrets > Actions > METEOCAT_API_KEY)
@@ -210,6 +211,12 @@ def process_radar_day(dia_str, estacions):
                                     estacions_per_recomptes())
     except Exception as e:
         print(f"⚠️ Error calculant els recomptes de classes: {e}")
+
+    # Paquet diari comprimit de les imatges de 6 min (el workflow el puja a una Release mensual)
+    try:
+        arxiu_radar.crear_paquet_dia(all_files_paths, dia_str)
+    except Exception as e:
+        print(f"⚠️ Error creant el paquet diari del radar: {e}")
 
     print(f"🗑️ Netejant fitxers de radar del dia {dia_str}...")
     for f_path in all_files_paths:

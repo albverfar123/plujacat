@@ -1,14 +1,23 @@
 name: Actualització Radar Meteocat
 
 on:
-  workflow_dispatch: # Execució manual
+  workflow_dispatch: # Execució manual (cron-job.org cada ~6 min)
+
+permissions:
+  contents: write   # necessari per crear Releases i pujar-hi fitxers
 
 jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
-      - name: Checkout del repositori
+      # Només calen l'script i les dependències: no descarreguem tot el repositori
+      - name: Checkout (només l'script)
         uses: actions/checkout@v5
+        with:
+          sparse-checkout: |
+            radar_to_nc.py
+            requirements.txt
+          sparse-checkout-cone-mode: false
 
       - name: Configurar Python
         uses: actions/setup-python@v6
@@ -23,19 +32,24 @@ jobs:
       - name: Executar script de descàrrega
         run: python radar_to_nc.py
 
-      - name: Commit i Push del fitxer radar
+      # Les imatges de 6 min ja no entren a git: es desen a una Release per dia (radar-AAAAMMDD).
+      # El workflow diari les descarrega, calcula l'acumulat, les arxiva en un paquet diari
+      # (Release mensual radar-arxiu-AAAAMM) i esborra la Release del dia.
+      - name: Pujar la imatge a la Release del dia
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Afegim el nou fitxer .nc generat a la carpeta dades_radar
-          git add dades_radar/*.nc
-          
-          # Fem el commit. El "|| exit 0" evita que el workflow falli si no hi ha canvis
-          git commit -m "🛰️ Radar: Afegit nou fitxer .nc" || exit 0
-          # Si un altre workflow ha fet push mentrestant, reintentem amb rebase
-          for i in 1 2 3; do
-            git pull --rebase origin "${GITHUB_REF_NAME}" && git push && exit 0
-            sleep $((i * 5))
+          shopt -s nullglob
+          for f in dades_radar/radar_*.nc; do
+            dia=$(basename "$f" | cut -c7-14)
+            tag="radar-${dia}"
+            gh release view "$tag" >/dev/null 2>&1 || \
+              gh release create "$tag" --prerelease --title "Radar ${dia} (6 min, temporal)" \
+                --notes "Imatges de radar de 6 min del ${dia} pendents de processar. S'esborra automàticament quan el workflow diari les arxiva." \
+              || true   # si un altre run l'ha creat alhora, continuem
+            for i in 1 2 3; do
+              gh release upload "$tag" "$f" --clobber && break
+              sleep $((i * 5))
+            done
+            echo "✅ $(basename "$f") → $tag"
           done
-          exit 1
