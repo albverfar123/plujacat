@@ -77,8 +77,11 @@
             .control.minimized { transform: translateY(100%); }
             #aspectControl { bottom: 180px; left: 135px; width: 110px; padding: 6px;}
             #btnToggleMenu { top: 65px; right: 10px; }
-            .header-tabs button { padding: 6px 6px; font-size: 11px; }
-            #btnAspect { margin-left: 4px; }
+            .header { padding: 0 10px; }
+            #titleHeader { font-size: 15px; }
+            .header-tabs { white-space: nowrap; }
+            .header-tabs button { padding: 6px 4px; font-size: 10.5px; }
+            #btnAspect { margin-left: 3px; }
         }
         
         #btnGPS {
@@ -91,17 +94,277 @@
         .user-location-dot { background-color: #007bff; border: 2px solid white; border-radius: 50%; }
         .leaflet-control-scale { margin-left: 10px !important; margin-top: 50px !important; }
         
+        /* --- Finestra d'informació --- */
+        #btnInfo {
+            width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid #aaa; background: transparent;
+            color: #ddd; font: italic bold 13px Georgia, serif; cursor: pointer; padding: 0; line-height: 1;
+        }
+        #btnInfo:hover { border-color: #fff; color: #fff; }
+        #infoOverlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 3000;
+            display: none; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box;
+        }
+        #infoOverlay.open { display: flex; }
+        #infoPanel {
+            background: #fff; color: #222; width: 100%; max-width: 720px; max-height: 100%;
+            border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.35); display: flex; flex-direction: column; overflow: hidden;
+        }
+        #infoHead {
+            display: flex; align-items: center; justify-content: space-between; gap: 8px;
+            padding: 10px 14px; border-bottom: 1px solid #e5e5e5; flex-shrink: 0;
+        }
+        #infoLangs button {
+            background: transparent; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer;
+            font-weight: bold; font-size: 12px; color: #666;
+        }
+        #infoLangs button.active { background: #007bff; color: #fff; }
+        #infoClose { background: transparent; border: none; font-size: 22px; line-height: 1; cursor: pointer; color: #666; padding: 2px 6px; }
+        #infoBody { overflow-y: auto; padding: 4px 22px 20px; font-size: 14px; line-height: 1.55; }
+        #infoBody h2 { font-size: 16px; margin: 20px 0 6px; }
+        #infoBody ul, #infoBody ol { padding-left: 20px; margin: 6px 0; }
+        #infoBody li { margin: 3px 0; }
+        #infoBody table { border-collapse: collapse; margin: 8px 0; font-size: 13px; width: 100%; }
+        #infoBody th, #infoBody td { border-bottom: 1px solid #e5e5e5; padding: 5px 8px; text-align: left; }
+        #infoBody td:not(:first-child), #infoBody th:not(:first-child) { text-align: right; white-space: nowrap; }
+        #infoBody code { background: #f2f2f2; padding: 1px 4px; border-radius: 3px; font-size: 12px; }
+        #infoBody a { color: #0062cc; }
+        @media (max-width: 600px) {
+            #infoOverlay { padding: 0; }
+            #infoPanel { border-radius: 0; height: 100%; }
+            #infoBody { padding: 4px 16px 20px; }
+        }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <div id="titleHeader" style="font-weight:bold">PlujaCat</div>
+    <div style="display:flex; align-items:center; gap:8px;">
+        <div id="titleHeader" style="font-weight:bold">PlujaCat</div>
+        <button id="btnInfo" title="Informació · Información · About" aria-label="Informació">i</button>
+    </div>
     <div class="header-tabs">
         <button id="modeDaily" class="active">DIARI</button>
         <button id="modeWeekly">SETMANAL</button>
         <button id="modeMonthly">MENSUAL</button>
         <button id="btnAspect">Orientació</button> 
+    </div>
+</div>
+
+<div id="infoOverlay" role="dialog" aria-modal="true" aria-label="Informació">
+    <div id="infoPanel">
+        <div id="infoHead">
+            <div id="infoLangs">
+                <button data-lang="ca" class="active">Català</button>
+                <button data-lang="es">Castellano</button>
+                <button data-lang="en">English</button>
+            </div>
+            <button id="infoClose" aria-label="Tancar">×</button>
+        </div>
+        <div id="infoBody">
+<!-- INFO:START (generat per eines/generar_info.py, no editar a mà) -->
+<div class="info-lang" data-lang="ca">
+<h2>Què és PlujaCat?</h2>
+<p>PlujaCat és un visor de la <strong>pluja acumulada a Catalunya</strong> dels darrers mesos, a escala <strong>diària, setmanal i mensual</strong>, amb una resolució d'<strong>1 km aproximadament</strong>. Combina dues fonts de dades públiques del Servei Meteorològic de Catalunya (Meteocat):</p>
+<ul>
+<li><strong>El radar meteorològic</strong>, que veu on plou amb molt detall espacial, però no mesura la quantitat amb precisió.</li>
+<li><strong>Les estacions automàtiques (XEMA)</strong>, unes 187 a Catalunya, que mesuren la pluja real amb pluviòmetre, però només en punts concrets.</li>
+</ul>
+<p>La idea és aprofitar el millor de cadascuna: el radar diu <strong>on</strong> ha plogut i les estacions diuen <strong>quant</strong>.</p>
+<h2>Com funciona</h2>
+<ol>
+<li><strong>Captura del radar (cada 6 minuts).</strong> Es descarrega la imatge del radar del Meteocat i cada color es converteix en una intensitat de pluja (mm/h).</li>
+<li><strong>Acumulat diari.</strong> Se sumen totes les imatges del dia (00–24 UTC):<ul>
+<li>Cada color es converteix amb una <strong>taula calibrada</strong> a partir de mesos de dades d'estacions.</li>
+<li>Es compensen les imatges que no s'han pogut descarregar.</li>
+<li>El resultat es <strong>corregeix amb les estacions XEMA del mateix dia</strong>. A prop de cada estació, el mapa s'ajusta al que ha mesurat el pluviòmetre. Lluny de les estacions, s'aplica la correcció mitjana del dia.</li>
+</ul>
+</li>
+<li><strong>Acumulats setmanals (dilluns–diumenge) i mensuals.</strong> Són la suma dels diaris. Només es compten els dies en què alguna estació ha registrat almenys 1 mm, per evitar sumar ecos falsos del radar en dies secs.</li>
+<li><strong>Conservació.</strong> Els mapes diaris es conserven uns 2–3 mesos. Els setmanals i els mensuals, indefinidament.</li>
+</ol>
+<p>Tot el procés s'executa automàticament amb GitHub Actions i els resultats es publiquen en aquesta pàgina.</p>
+<h2>Fiabilitat</h2>
+<p>La calibració s'ha validat amb les estacions XEMA de març a octubre de 2026. Cada estació es comprova amb un mapa corregit <strong>sense</strong> fer servir la seva pròpia dada, com si fos un punt sense estació:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Abans de la calibració</th>
+<th>Ara</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pluja estimada / pluja mesurada</td>
+<td>0,46</td>
+<td>0,89</td>
+</tr>
+<tr>
+<td>Correlació amb les estacions</td>
+<td>0,51</td>
+<td>0,79</td>
+</tr>
+<tr>
+<td>Error mitjà diari</td>
+<td>6,9 mm</td>
+<td>4,3 mm</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Limitacions:</strong></p>
+<ul>
+<li>És una estimació, no una mesura oficial.</li>
+<li>Pot haver-hi ecos falsos del radar, sobretot sobre el mar i a prop de les muntanyes.</li>
+<li>La neu i la pluja molt localitzada són més difícils d'estimar.</li>
+<li>Els mapes anteriors a l'agost de 2026 es van calcular amb el mètode antic, sense calibrar.</li>
+</ul>
+<p>Tota l'anàlisi és pública i reproduïble a la carpeta <a target="_blank" rel="noopener" href="https://github.com/albverfar123/plujacat/tree/main/analisi"><code>analisi/</code></a> del repositori.</p>
+<h2>Com fer servir el mapa</h2>
+<ul>
+<li><strong>DIARI / SETMANAL / MENSUAL:</strong> tria l'escala temporal. Amb el calendari i les fletxes ◀ ▶ canvies de data.</li>
+<li><strong>Estacions:</strong> els números sobre el mapa són la pluja mesurada per cada estació XEMA (mm).</li>
+<li><strong>Orientació:</strong> mostra l'orientació del relleu (a partir de zoom 8).</li>
+<li><strong>📍:</strong> centra el mapa a la teva ubicació.</li>
+</ul>
+<h2>Dades i crèdits</h2>
+<p>Dades de radar i d'estacions: <strong>Servei Meteorològic de Catalunya (Meteocat)</strong>. PlujaCat és un projecte independent, sense cap vinculació amb el Meteocat. Codi: <a target="_blank" rel="noopener" href="https://github.com/albverfar123/plujacat">github.com/albverfar123/plujacat</a>.</p>
+</div>
+<div class="info-lang" data-lang="es" hidden>
+<h2>¿Qué es PlujaCat?</h2>
+<p>PlujaCat es un visor de la <strong>lluvia acumulada en Cataluña</strong> de los últimos meses, a escala <strong>diaria, semanal y mensual</strong>, con una resolución de <strong>aproximadamente 1 km</strong>. Combina dos fuentes de datos públicas del Servei Meteorològic de Catalunya (Meteocat):</p>
+<ul>
+<li><strong>El radar meteorológico</strong>, que ve dónde llueve con mucho detalle espacial, pero no mide la cantidad con precisión.</li>
+<li><strong>Las estaciones automáticas (XEMA)</strong>, unas 187 en Cataluña, que miden la lluvia real con pluviómetro, pero solo en puntos concretos.</li>
+</ul>
+<p>La idea es aprovechar lo mejor de cada una: el radar dice <strong>dónde</strong> ha llovido y las estaciones dicen <strong>cuánto</strong>.</p>
+<h2>Cómo funciona</h2>
+<ol>
+<li><strong>Captura del radar (cada 6 minutos).</strong> Se descarga la imagen del radar del Meteocat y cada color se convierte en una intensidad de lluvia (mm/h).</li>
+<li><strong>Acumulado diario.</strong> Se suman todas las imágenes del día (00–24 UTC):<ul>
+<li>Cada color se convierte con una <strong>tabla calibrada</strong> a partir de meses de datos de estaciones.</li>
+<li>Se compensan las imágenes que no se han podido descargar.</li>
+<li>El resultado se <strong>corrige con las estaciones XEMA del mismo día</strong>. Cerca de cada estación, el mapa se ajusta a lo que ha medido el pluviómetro. Lejos de las estaciones, se aplica la corrección media del día.</li>
+</ul>
+</li>
+<li><strong>Acumulados semanales (lunes–domingo) y mensuales.</strong> Son la suma de los diarios. Solo se cuentan los días en que alguna estación ha registrado al menos 1 mm, para evitar sumar ecos falsos del radar en días secos.</li>
+<li><strong>Conservación.</strong> Los mapas diarios se conservan unos 2–3 meses. Los semanales y los mensuales, indefinidamente.</li>
+</ol>
+<p>Todo el proceso se ejecuta automáticamente con GitHub Actions y los resultados se publican en esta página.</p>
+<h2>Fiabilidad</h2>
+<p>La calibración se ha validado con las estaciones XEMA de marzo a octubre de 2026. Cada estación se comprueba con un mapa corregido <strong>sin</strong> usar su propio dato, como si fuera un punto sin estación:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Antes de la calibración</th>
+<th>Ahora</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lluvia estimada / lluvia medida</td>
+<td>0,46</td>
+<td>0,89</td>
+</tr>
+<tr>
+<td>Correlación con las estaciones</td>
+<td>0,51</td>
+<td>0,79</td>
+</tr>
+<tr>
+<td>Error medio diario</td>
+<td>6,9 mm</td>
+<td>4,3 mm</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Limitaciones:</strong></p>
+<ul>
+<li>Es una estimación, no una medida oficial.</li>
+<li>Puede haber ecos falsos del radar, sobre todo sobre el mar y cerca de las montañas.</li>
+<li>La nieve y la lluvia muy localizada son más difíciles de estimar.</li>
+<li>Los mapas anteriores a agosto de 2026 se calcularon con el método antiguo, sin calibrar.</li>
+</ul>
+<p>Todo el análisis es público y reproducible en la carpeta <a target="_blank" rel="noopener" href="https://github.com/albverfar123/plujacat/tree/main/analisi"><code>analisi/</code></a> del repositorio.</p>
+<h2>Cómo usar el mapa</h2>
+<ul>
+<li><strong>DIARI / SETMANAL / MENSUAL:</strong> elige la escala temporal. Con el calendario y las flechas ◀ ▶ cambias de fecha.</li>
+<li><strong>Estaciones:</strong> los números sobre el mapa son la lluvia medida por cada estación XEMA (mm).</li>
+<li><strong>Orientació:</strong> muestra la orientación del relieve (a partir de zoom 8).</li>
+<li><strong>📍:</strong> centra el mapa en tu ubicación.</li>
+</ul>
+<h2>Datos y créditos</h2>
+<p>Datos de radar y de estaciones: <strong>Servei Meteorològic de Catalunya (Meteocat)</strong>. PlujaCat es un proyecto independiente, sin ninguna vinculación con el Meteocat. Código: <a target="_blank" rel="noopener" href="https://github.com/albverfar123/plujacat">github.com/albverfar123/plujacat</a>.</p>
+</div>
+<div class="info-lang" data-lang="en" hidden>
+<h2>What is PlujaCat?</h2>
+<p>PlujaCat is a viewer of <strong>accumulated rainfall in Catalonia</strong> over recent months, at <strong>daily, weekly and monthly</strong> scale, with a resolution of <strong>about 1 km</strong>. It combines two public data sources from the Catalan Meteorological Service (Meteocat):</p>
+<ul>
+<li><strong>Weather radar</strong>, which shows where it rains in great spatial detail, but does not measure amounts accurately.</li>
+<li><strong>Automatic weather stations (XEMA)</strong>, about 187 in Catalonia, which measure actual rainfall with rain gauges, but only at specific points.</li>
+</ul>
+<p>The idea is to combine the strengths of both: the radar tells <strong>where</strong> it rained and the stations tell <strong>how much</strong>.</p>
+<h2>How it works</h2>
+<ol>
+<li><strong>Radar capture (every 6 minutes).</strong> The Meteocat radar image is downloaded and each colour is converted into a rain rate (mm/h).</li>
+<li><strong>Daily accumulation.</strong> All images of the day (00–24 UTC) are added up:<ul>
+<li>Each colour is converted using a <strong>calibrated table</strong> fitted to months of station data.</li>
+<li>Missing images are compensated for.</li>
+<li>The result is <strong>corrected with the XEMA stations of the same day</strong>. Near each station, the map is adjusted to what the rain gauge measured. Far from stations, the day's average correction is applied.</li>
+</ul>
+</li>
+<li><strong>Weekly (Monday–Sunday) and monthly totals.</strong> They are the sum of the daily maps. Only days on which at least one station recorded 1 mm or more are counted, so that false radar echoes on dry days are not added up.</li>
+<li><strong>Retention.</strong> Daily maps are kept for about 2–3 months; weekly and monthly maps are kept indefinitely.</li>
+</ol>
+<p>The whole process runs automatically with GitHub Actions, and the results are published on this page.</p>
+<h2>Reliability</h2>
+<p>The calibration was validated against XEMA stations from March to October 2026. Each station is checked against a map corrected <strong>without</strong> its own measurement, as if it were a point with no station:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Before calibration</th>
+<th>Now</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Estimated / measured rainfall</td>
+<td>0.46</td>
+<td>0.89</td>
+</tr>
+<tr>
+<td>Correlation with stations</td>
+<td>0.51</td>
+<td>0.79</td>
+</tr>
+<tr>
+<td>Mean daily error</td>
+<td>6.9 mm</td>
+<td>4.3 mm</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Limitations:</strong></p>
+<ul>
+<li>This is an estimate, not an official measurement.</li>
+<li>There may be false radar echoes, especially over the sea and near mountains.</li>
+<li>Snow and very localised rain are harder to estimate.</li>
+<li>Maps before August 2026 were computed with the old, uncalibrated method.</li>
+</ul>
+<p>The full analysis is public and reproducible in the <a target="_blank" rel="noopener" href="https://github.com/albverfar123/plujacat/tree/main/analisi"><code>analisi/</code></a> folder of the repository.</p>
+<h2>Using the map</h2>
+<ul>
+<li><strong>DIARI / SETMANAL / MENSUAL:</strong> choose the time scale (daily / weekly / monthly). Use the calendar and the ◀ ▶ arrows to change the date.</li>
+<li><strong>Stations:</strong> the numbers on the map are the rainfall measured by each XEMA station (mm).</li>
+<li><strong>Orientació:</strong> shows terrain aspect (from zoom level 8).</li>
+<li><strong>📍:</strong> centres the map on your location.</li>
+</ul>
+<h2>Data and credits</h2>
+<p>Radar and station data: <strong>Servei Meteorològic de Catalunya (Meteocat)</strong>. PlujaCat is an independent project with no affiliation to Meteocat. Code: <a target="_blank" rel="noopener" href="https://github.com/albverfar123/plujacat">github.com/albverfar123/plujacat</a>.</p>
+</div>
+<!-- INFO:END -->
+        </div>
     </div>
 </div>
 
@@ -367,6 +630,30 @@ function addAspectLegend() {
 }
 document.getElementById("btnAspect").onclick = toggleAspect;
 document.getElementById("aspectOpacity").oninput = function() { if (aspectLayer) aspectLayer.setOpacity(this.value); };
+
+// --- INFORMACIÓ ---
+(function() {
+    const overlay = document.getElementById("infoOverlay");
+    const setLang = (lang) => {
+        document.querySelectorAll("#infoLangs button").forEach(b => b.classList.toggle("active", b.dataset.lang === lang));
+        document.querySelectorAll(".info-lang").forEach(d => d.hidden = d.dataset.lang !== lang);
+        document.getElementById("infoBody").scrollTop = 0;
+        try { localStorage.setItem("plujacat_lang", lang); } catch (e) {}
+    };
+    let lang = "ca";
+    try {
+        lang = localStorage.getItem("plujacat_lang") ||
+               ((navigator.language || "ca").startsWith("es") ? "es" : (navigator.language || "ca").startsWith("en") ? "en" : "ca");
+    } catch (e) {}
+    setLang(lang);
+    document.querySelectorAll("#infoLangs button").forEach(b => b.onclick = () => setLang(b.dataset.lang));
+    const open = () => overlay.classList.add("open");
+    const close = () => overlay.classList.remove("open");
+    document.getElementById("btnInfo").onclick = open;
+    document.getElementById("infoClose").onclick = close;
+    overlay.addEventListener("click", e => { if (e.target === overlay) close(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+})();
 
 // --- INICIAR ---
 let dInit = new Date(); dInit.setDate(dInit.getDate()-1);
