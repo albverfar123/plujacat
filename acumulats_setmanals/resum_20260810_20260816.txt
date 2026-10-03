@@ -1,0 +1,9 @@
+RESUM SETMANAL: 2026-08-10 a 2026-08-16
+--------------------------------------------------
+20260810: PLUJA      -> Vàlid: Bonaigua (2.262 m) (19.7 mm)
+20260811: PLUJA      -> Vàlid: Lladurs (80.0 mm)
+20260812: PLUJA      -> Vàlid: Espot (2.519 m) (11.5 mm)
+20260813: PLUJA      -> Vàlid: el Port del Comte (2.288 m) (13.2 mm)
+20260814: PLUJA      -> Vàlid: Lladurs (47.8 mm)
+20260815: PLUJA      -> Vàlid: Artés (49.6 mm)
+20260816: PLUJA      -> Vàlid: Girona (25.9 mm)

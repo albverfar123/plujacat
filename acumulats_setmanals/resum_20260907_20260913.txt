@@ -1,0 +1,9 @@
+RESUM SETMANAL: 2026-09-07 a 2026-09-13
+--------------------------------------------------
+20260907: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260908: PLUJA      -> Vàlid: Ulldeter (2.413 m) (22.4 mm)
+20260909: PLUJA      -> Vàlid: Sant Joan de les Abadesses (80.8 mm)
+20260910: ANTICICLÓ  -> Màxim: Guardiola de Berguedà (0.2 mm)
+20260911: ANTICICLÓ  -> Màxim: Guardiola de Berguedà (0.1 mm)
+20260912: ANTICICLÓ  -> Màxim: la Panadella (0.3 mm)
+20260913: ANTICICLÓ  -> Màxim: Santa Coloma de Queralt (0.2 mm)

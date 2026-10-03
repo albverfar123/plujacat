@@ -1,0 +1,9 @@
+RESUM SETMANAL: 2026-08-31 a 2026-09-06
+--------------------------------------------------
+20260831: ANTICICLÓ  -> Màxim: la Vall d'en Bas (0.5 mm)
+20260901: ANTICICLÓ  -> Màxim: Lladurs (0.3 mm)
+20260902: ANTICICLÓ  -> Màxim: la Panadella (0.2 mm)
+20260903: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260904: ANTICICLÓ  -> Màxim: Santa Coloma de Queralt (0.1 mm)
+20260905: ANTICICLÓ  -> Màxim: Nulles (0.1 mm)
+20260906: ANTICICLÓ  -> Màxim: Illa de Buda (0.2 mm)
