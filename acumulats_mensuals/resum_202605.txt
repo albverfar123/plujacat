@@ -1,0 +1,37 @@
+RESUM MENSUAL: 2026-05
+--------------------------------------------------
+20260501: PLUJA      -> Espot (2.519 m) (15.9 mm)
+20260502: PLUJA      -> Miami Platja (40.3 mm)
+20260503: PLUJA      -> Espot (2.519 m) (32.7 mm)
+20260504: PLUJA      -> Alinyà (35.8 mm)
+20260505: PLUJA      -> Pantà de Darnius - Boadella (46.2 mm)
+20260506: PLUJA      -> Cabanes (34.3 mm)
+20260507: PLUJA      -> Lladurs (46.0 mm)
+20260508: PLUJA      -> PN dels Ports (3.0 mm)
+20260509: PLUJA      -> PN dels Ports (31.5 mm)
+20260510: PLUJA      -> Sant Martí de Riucorb (15.6 mm)
+20260511: PLUJA      -> Molló - Fabert (6.7 mm)
+20260512: PLUJA      -> Sant Pau de Segúries (54.3 mm)
+20260513: PLUJA      -> Girona (7.2 mm)
+20260514: PLUJA      -> Pantà de Darnius - Boadella (54.9 mm)
+20260515: PLUJA      -> Lac Redon (2.245 m) (20.9 mm)
+20260516: ANTICICLÓ  -> Màxim: Bonaigua (2.262 m) (0.9 mm)
+20260517: PLUJA      -> Orís (32.0 mm)
+20260518: PLUJA      -> Castell d'Aro (54.9 mm)
+20260519: PLUJA      -> la Vall d'en Bas (18.5 mm)
+20260520: ANTICICLÓ  -> Màxim: Olot (0.2 mm)
+20260521: ANTICICLÓ  -> Màxim: Sant Salvador de Guardiola (0.1 mm)
+20260522: ANTICICLÓ  -> Màxim: Illa de Buda (0.1 mm)
+20260523: PLUJA      -> Cadí Nord (2.145 m) - Prat d'Aguiló (1.6 mm)
+20260524: PLUJA      -> Vielha - Elipòrt (11.6 mm)
+20260525: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260526: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260527: ANTICICLÓ  -> Màxim: Sant Pere Pescador (0.1 mm)
+20260528: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260529: PLUJA      -> Santuari de Queralt (11.4 mm)
+20260530: PLUJA      -> Perafita (12.4 mm)
+20260531: PLUJA      -> Guixers - Valls (27.9 mm)
+--------------------------------------------------
+Dies amb pluja sumats: 23
+Dies secs (no sumats): 8
+Dies amb pluja però sense radar: 0

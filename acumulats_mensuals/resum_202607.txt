@@ -1,0 +1,37 @@
+RESUM MENSUAL: 2026-07
+--------------------------------------------------
+20260701: ANTICICLÓ  -> Màxim: Pantà de Sau (0.1 mm)
+20260702: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260703: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260704: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260705: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260706: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260707: PLUJA      -> Oliana (7.3 mm)
+20260708: PLUJA      -> Alinyà (12.3 mm)
+20260709: ANTICICLÓ  -> Màxim: Lac Redon (2.245 m) (0.3 mm)
+20260710: PLUJA      -> Puigcerdà (14.7 mm)
+20260711: ANTICICLÓ  -> Màxim: Puig Sesolles (1.666 m) (0.5 mm)
+20260712: ANTICICLÓ  -> Màxim: Sant Pere Pescador (0.1 mm)
+20260713: ANTICICLÓ  -> Màxim: Batea (0.7 mm)
+20260714: ANTICICLÓ  -> Màxim: Sant Pere Pescador (0.1 mm)
+20260715: ANTICICLÓ  -> Màxim: Alinyà (0.2 mm)
+20260716: PLUJA      -> Tírvia (13.3 mm)
+20260717: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260718: PLUJA      -> PN dels Ports (2.3 mm)
+20260719: PLUJA      -> Mas de Barberans (1.0 mm)
+20260720: PLUJA      -> Falset (12.4 mm)
+20260721: PLUJA      -> l'Ametlla de Mar (1.2 mm)
+20260722: PLUJA      -> Mas de Barberans (7.0 mm)
+20260723: PLUJA      -> Sant Joan de les Abadesses (20.9 mm)
+20260724: PLUJA      -> Lac Redon (2.245 m) (1.6 mm)
+20260725: PLUJA      -> Sant Llorenç Savall (34.5 mm)
+20260726: PLUJA      -> Pantà de Darnius - Boadella (12.2 mm)
+20260727: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260728: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260729: ANTICICLÓ  -> Màxim: PN del Garraf - el Rascler (0.2 mm)
+20260730: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260731: PLUJA      -> Ulldeter (2.413 m) (8.0 mm)
+--------------------------------------------------
+Dies amb pluja sumats: 14
+Dies secs (no sumats): 17
+Dies amb pluja però sense radar: 0

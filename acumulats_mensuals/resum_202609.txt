@@ -1,0 +1,36 @@
+RESUM MENSUAL: 2026-09
+--------------------------------------------------
+20260901: ANTICICLÓ  -> Màxim: Lladurs (0.3 mm)
+20260902: ANTICICLÓ  -> Màxim: la Panadella (0.2 mm)
+20260903: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260904: ANTICICLÓ  -> Màxim: Santa Coloma de Queralt (0.1 mm)
+20260905: ANTICICLÓ  -> Màxim: Nulles (0.1 mm)
+20260906: ANTICICLÓ  -> Màxim: Illa de Buda (0.2 mm)
+20260907: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260908: PLUJA      -> Ulldeter (2.413 m) (22.4 mm)
+20260909: PLUJA      -> Sant Joan de les Abadesses (80.8 mm)
+20260910: ANTICICLÓ  -> Màxim: Guardiola de Berguedà (0.2 mm)
+20260911: ANTICICLÓ  -> Màxim: Guardiola de Berguedà (0.1 mm)
+20260912: ANTICICLÓ  -> Màxim: la Panadella (0.3 mm)
+20260913: ANTICICLÓ  -> Màxim: Santa Coloma de Queralt (0.2 mm)
+20260914: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260915: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260916: PLUJA      -> Canyelles (86.4 mm)
+20260917: PLUJA      -> el Vendrell (13.0 mm)
+20260918: PLUJA      -> Barcelona - el Raval (5.9 mm)
+20260919: ANTICICLÓ  -> Màxim: Banyoles (0.1 mm)
+20260920: ANTICICLÓ  -> Màxim: Santa Coloma de Queralt (0.1 mm)
+20260921: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260922: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260923: ANTICICLÓ  -> Màxim: Pinós (0.1 mm)
+20260924: ANTICICLÓ  -> Màxim: Sant Pere Pescador (0.1 mm)
+20260925: ANTICICLÓ  -> Màxim: Benissanet (0.1 mm)
+20260926: ANTICICLÓ  -> Màxim: Girona (0.1 mm)
+20260927: ANTICICLÓ  -> Màxim: PN del Garraf - el Rascler (0.2 mm)
+20260928: PLUJA      -> Blancafort (7.9 mm)
+20260929: PLUJA      -> Torroella de Montgrí (116.3 mm)
+20260930: PLUJA      -> Tàrrega (27.9 mm)
+--------------------------------------------------
+Dies amb pluja sumats: 8
+Dies secs (no sumats): 22
+Dies amb pluja però sense radar: 0

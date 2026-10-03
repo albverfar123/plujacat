@@ -1,0 +1,37 @@
+RESUM MENSUAL: 2026-03
+--------------------------------------------------
+20260301: PLUJA      -> Cantonigròs (2.2 mm)
+20260302: PLUJA      -> PN dels Ports (3.0 mm)
+20260303: PLUJA      -> Espot (2.519 m) (4.2 mm)
+20260304: PLUJA      -> PN dels Ports (9.2 mm)
+20260305: PLUJA      -> Viladrau (106.1 mm)
+20260306: PLUJA      -> PN dels Ports (147.3 mm)
+20260307: PLUJA      -> Prades (46.7 mm)
+20260308: PLUJA      -> Illa de Buda (39.5 mm)
+20260309: PLUJA      -> Anglès (26.4 mm)
+20260310: PLUJA      -> Ulldemolins (6.4 mm)
+20260311: PLUJA      -> Certascan (2.398 m) (6.5 mm)
+20260312: ANTICICLÓ  -> Màxim: Lac Redon (2.245 m) (0.3 mm)
+20260313: ANTICICLÓ  -> Màxim: Certascan (2.398 m) (0.6 mm)
+20260314: PLUJA      -> Santa Coloma de Farners (38.8 mm)
+20260315: PLUJA      -> Bonabé (1.691 m) (19.1 mm)
+20260316: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260317: ANTICICLÓ  -> Màxim: Cervera (0.1 mm)
+20260318: PLUJA      -> Sant Pau de Segúries (13.3 mm)
+20260319: PLUJA      -> PN dels Ports (6.0 mm)
+20260320: ANTICICLÓ  -> Màxim: Sant Pau de Segúries (0.1 mm)
+20260321: ANTICICLÓ  -> Màxim: Illa de Buda (0.1 mm)
+20260322: PLUJA      -> Espolla (14.1 mm)
+20260323: PLUJA      -> Ulldeter (2.413 m) (7.3 mm)
+20260324: ANTICICLÓ  -> Màxim: Pinós (0.2 mm)
+20260325: PLUJA      -> Lac Redon (2.245 m) (4.0 mm)
+20260326: PLUJA      -> Lac Redon (2.245 m) (2.6 mm)
+20260327: PLUJA      -> Badalona - Museu (1.1 mm)
+20260328: PLUJA      -> Certascan (2.398 m) (36.7 mm)
+20260329: PLUJA      -> Certascan (2.398 m) (44.3 mm)
+20260330: PLUJA      -> Certascan (2.398 m) (7.6 mm)
+20260331: PLUJA      -> Certascan (2.398 m) (39.9 mm)
+--------------------------------------------------
+Dies amb pluja sumats: 24
+Dies secs (no sumats): 7
+Dies amb pluja però sense radar: 0

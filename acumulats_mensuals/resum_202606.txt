@@ -1,0 +1,36 @@
+RESUM MENSUAL: 2026-06
+--------------------------------------------------
+20260601: PLUJA      -> Certascan (2.398 m) (1.6 mm)
+20260602: PLUJA      -> Sant Pau de Segúries (53.8 mm)
+20260603: ANTICICLÓ  -> Màxim: Caldes de Montbui (0.8 mm)
+20260604: PLUJA      -> Sant Joan de les Abadesses (90.4 mm)
+20260605: PLUJA      -> les Cases d'Alcanar (61.1 mm)
+20260606: PLUJA      -> Miami Platja (1.6 mm)
+20260607: ANTICICLÓ  -> Màxim: el Montmell (0.1 mm)
+20260608: PLUJA      -> Molló - Fabert (19.2 mm)
+20260609: PLUJA      -> Boí (2.537 m) (12.0 mm)
+20260610: PLUJA      -> Oliola (12.4 mm)
+20260611: PLUJA      -> Montserrat - Sant Dimes (2.5 mm)
+20260612: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260613: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260614: PLUJA      -> Bonaigua (2.262 m) (25.0 mm)
+20260615: PLUJA      -> el Port del Comte (2.288 m) (26.7 mm)
+20260616: PLUJA      -> Malniu (2.229 m) (41.0 mm)
+20260617: PLUJA      -> Bonabé (1.691 m) (25.5 mm)
+20260618: PLUJA      -> el Perelló (1.5 mm)
+20260619: ANTICICLÓ  -> Màxim: Salòria (2.451 m) (0.7 mm)
+20260620: ANTICICLÓ  -> Màxim: Bonabé (1.691 m) (0.4 mm)
+20260621: PLUJA      -> Certascan (2.398 m) (7.4 mm)
+20260622: PLUJA      -> Lac Redon (2.245 m) (18.0 mm)
+20260623: PLUJA      -> Alinyà (17.4 mm)
+20260624: PLUJA      -> Lac Redon (2.245 m) (14.4 mm)
+20260625: ANTICICLÓ  -> Màxim: Illa de Buda (0.1 mm)
+20260626: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260627: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260628: PLUJA      -> Vielha - Elipòrt (3.8 mm)
+20260629: PLUJA      -> Santa Coloma de Farners (70.8 mm)
+20260630: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+--------------------------------------------------
+Dies amb pluja sumats: 20
+Dies secs (no sumats): 10
+Dies amb pluja però sense radar: 0
