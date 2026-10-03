@@ -18,6 +18,7 @@ import sys
 import csv
 import json
 import calendar
+import validacio
 from datetime import datetime, date, timedelta
 
 import requests
@@ -223,7 +224,8 @@ def netejar_diaris():
     limit_id = limit.strftime("%Y%m")
     print(f"\n🧹 Netejant diaris anteriors a {limit:%Y-%m} (es conserven des de {limit:%Y-%m})")
 
-    esborrats, protegits = 0, set()
+    esborrats, protegits, sense_parelles = 0, set(), set()
+    amb_parelles = validacio.dates_amb_parelles()
     for f in sorted(os.listdir(DAILY_DIR)):
         if not f.startswith(DAILY_PREFIXES):
             continue
@@ -234,10 +236,17 @@ def netejar_diaris():
         if not mensual_existeix(y, m):
             protegits.add(f"{y}-{m:02d}")
             continue
+        # No esborrem un dia si encara no s'han extret les parelles radar-estació
+        if f.startswith("acumulat_") and dia not in amb_parelles and \
+                os.path.exists(os.path.join(DAILY_DIR, f"estacions_{dia}.json")):
+            sense_parelles.add(dia)
+            continue
         os.remove(os.path.join(DAILY_DIR, f))
         esborrats += 1
 
     print(f"🗑️ Fitxers diaris esborrats: {esborrats}")
+    if sense_parelles:
+        print(f"⚠️ No s'han esborrat {len(sense_parelles)} dies perquè encara no tenen parelles radar-estació.")
     if protegits:
         print(f"⚠️ No s'han esborrat els diaris de {', '.join(sorted(protegits))} perquè no tenen mensual.")
 

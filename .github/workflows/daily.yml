@@ -57,8 +57,8 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          mkdir -p acumulats_mensuals
-          git add -A dades_radar/ acumulats_diaris/ acumulats_setmanals/ acumulats_mensuals/ bounds.json
+          mkdir -p acumulats_mensuals validacio
+          git add -A dades_radar/ acumulats_diaris/ acumulats_setmanals/ acumulats_mensuals/ validacio/ bounds.json
 
           if git diff --staged --quiet; then
             echo "No hi ha canvis per pujar."

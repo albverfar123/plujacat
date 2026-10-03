@@ -10,6 +10,7 @@ import matplotlib.colors as colors
 import json
 import requests
 import csv
+import validacio
 
 # --- CONFIGURACIÓ API METEOCAT ---
 # La clau es llegeix del secret del repositori (Settings > Secrets > Actions > METEOCAT_API_KEY)
@@ -38,14 +39,25 @@ def api_get(path):
 def get_estacions_info():
     global _cache_metadades
     if _cache_metadades is None:
-        _cache_metadades = {}
+        info = {}
         for e in api_get("/estacions/metadades"):
-            _cache_metadades[e['codi']] = {
+            info[e['codi']] = {
                 'nom': e['nom'],
                 'lat': e['coordenades']['latitud'],
                 'lon': e['coordenades']['longitud']
             }
+        _cache_metadades = info
+        validacio.desar_estacions(info)
     return _cache_metadades
+
+
+def estacions_per_recomptes():
+    """Metadades d'estacions: de l'API si es pot, si no de la còpia guardada."""
+    try:
+        return get_estacions_info()
+    except Exception as e:
+        print(f"⚠️ No s'han pogut obtenir les estacions de l'API ({e}); es fa servir la còpia local.")
+        return validacio.carregar_estacions()
 
 
 def get_dades_mes(year, month):
@@ -154,6 +166,13 @@ def process_radar_day(dia_str):
 
     generate_daily_png(total_precip, lon, lat, dia_str)
 
+    # Recompte de classes de color al píxel de cada estació (abans d'esborrar els fitxers de 6 min)
+    try:
+        validacio.recomptes_classes(all_files_paths, f"{dia_str[:4]}-{dia_str[4:6]}-{dia_str[6:]}",
+                                    estacions_per_recomptes())
+    except Exception as e:
+        print(f"⚠️ Error calculant els recomptes de classes: {e}")
+
     print(f"🗑️ Netejant fitxers de radar del dia {dia_str}...")
     for f_path in all_files_paths:
         try:
@@ -196,6 +215,12 @@ def calculate_daily():
         process_radar_day(dia_str)
         if not process_stations_day(dia_obj):
             errors_estacions += 1
+
+    # Parelles radar-estació per a validació (dies amb acumulat i estacions)
+    try:
+        validacio.extreure_parelles(DAILY_DIR)
+    except Exception as e:
+        print(f"⚠️ Error extraient parelles radar-estació: {e}")
 
     if errors_estacions:
         print(f"\n⚠️ {errors_estacions} dia(es) sense dades d'estacions. Es reintentarà a la propera execució.")
