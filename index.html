@@ -77,6 +77,8 @@
             .control.minimized { transform: translateY(100%); }
             #aspectControl { bottom: 180px; left: 135px; width: 110px; padding: 6px;}
             #btnToggleMenu { top: 65px; right: 10px; }
+            .header-tabs button { padding: 6px 6px; font-size: 11px; }
+            #btnAspect { margin-left: 4px; }
         }
         
         #btnGPS {
@@ -98,6 +100,7 @@
     <div class="header-tabs">
         <button id="modeDaily" class="active">DIARI</button>
         <button id="modeWeekly">SETMANAL</button>
+        <button id="modeMonthly">MENSUAL</button>
         <button id="btnAspect">Orientació</button> 
     </div>
 </div>
@@ -153,9 +156,16 @@ legend.onAdd = function() {
     return this._div;
 };
 legend.update = function() {
-    let title = viewMode === 'daily' ? "Acumulat Diari (mm)" : "Acumulat Setmanal (mm)";
+    let title = viewMode === 'daily' ? "Acumulat Diari (mm)" : viewMode === 'weekly' ? "Acumulat Setmanal (mm)" : "Acumulat Mensual (mm)";
     let marks = "", ticks = "";
-    if (viewMode === 'daily') {
+    if (viewMode === 'monthly') {
+        const pts = [0.1, 1, 10, 50, 200, 600];
+        pts.forEach(v => {
+            let pos = ((Math.log10(v) + 1) / 3.778) * 100;
+            marks += `<span style="left:${pos}%"></span>`;
+            ticks += `<span style="left:${pos}%">${v}</span>`;
+        });
+    } else if (viewMode === 'daily') {
         const pts = [0.1, 1, 5, 20, 100, 200];
         pts.forEach(v => {
             let pos = ((Math.log10(v) + 1) / 3.301) * 100;
@@ -212,7 +222,14 @@ async function updateView() {
     if (overlayRadar) map.removeLayer(overlayRadar);
     stationsLayer.clearLayers();
 
-    if (viewMode === 'daily') {
+    if (viewMode === 'monthly') {
+        const ym = document.getElementById("datePicker").value.slice(0,7);
+        const [y, m] = ym.split("-");
+        weekDisplay.style.display = "block";
+        weekDisplay.textContent = `${MESOS[parseInt(m) - 1]} ${y}`;
+        loadRadar(`acumulats_mensuals/mensual_${y}${m}.png`);
+        loadStations(`acumulats_mensuals/estacions_${y}${m}.json`);
+    } else if (viewMode === 'daily') {
         weekDisplay.style.display = "none";
         loadRadar(`acumulats_diaris/acumulat_${dates.daily}.png`);
         loadStations(`acumulats_diaris/estacions_${dates.daily}.json`);
@@ -271,14 +288,43 @@ document.getElementById("btnToggleMenu").onclick = function() {
     this.textContent = menu.classList.contains("minimized") ? "Obrir" : "Amagar";
 };
 
-document.getElementById("modeDaily").onclick = function() { viewMode='daily'; this.classList.add('active'); document.getElementById("modeWeekly").classList.remove('active'); updateView(); };
-document.getElementById("modeWeekly").onclick = function() { viewMode='weekly'; this.classList.add('active'); document.getElementById("modeDaily").classList.remove('active'); updateView(); };
+const MESOS = ["Gener", "Febrer", "Març", "Abril", "Maig", "Juny", "Juliol", "Agost", "Setembre", "Octubre", "Novembre", "Desembre"];
+function setMode(mode) {
+    viewMode = mode;
+    ["Daily", "Weekly", "Monthly"].forEach(k => document.getElementById("mode" + k).classList.toggle('active', mode === k.toLowerCase()));
+    if (mode === 'monthly') {
+        // El mes en curs encara no té mensual: mostrem l'últim mes tancat
+        const picker = document.getElementById("datePicker");
+        const now = new Date();
+        const curYM = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+        if (picker.value.slice(0,7) >= curYM) {
+            const last = new Date(now.getFullYear(), now.getMonth(), 0);
+            picker.value = `${last.getFullYear()}-${String(last.getMonth() + 1).padStart(2, '0')}-${String(last.getDate()).padStart(2, '0')}`;
+        }
+    }
+    updateView();
+}
+function shiftDate(dir) {
+    const picker = document.getElementById("datePicker");
+    let [y, m, d] = picker.value.split("-").map(Number);
+    if (viewMode === 'monthly') {
+        let dt = new Date(y, m - 1 + dir, 1);
+        picker.value = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-01`;
+    } else {
+        let dt = new Date(Date.UTC(y, m - 1, d + dir));
+        picker.value = dt.toISOString().slice(0,10);
+    }
+    updateView();
+}
+document.getElementById("modeDaily").onclick = () => setMode('daily');
+document.getElementById("modeWeekly").onclick = () => setMode('weekly');
+document.getElementById("modeMonthly").onclick = () => setMode('monthly');
 document.getElementById("datePicker").onchange = updateView;
 document.getElementById("checkStations").onchange = updateView;
 document.getElementById("opacitySlider").oninput = function() { if (overlayRadar) overlayRadar.setOpacity(this.value); };
 
-document.getElementById("prevBtn").onclick = () => { let d = new Date(datePicker.value); d.setDate(d.getDate()-1); datePicker.value=d.toISOString().slice(0,10); updateView(); };
-document.getElementById("nextBtn").onclick = () => { let d = new Date(datePicker.value); d.setDate(d.getDate()+1); datePicker.value=d.toISOString().slice(0,10); updateView(); };
+document.getElementById("prevBtn").onclick = () => shiftDate(-1);
+document.getElementById("nextBtn").onclick = () => shiftDate(1);
 
 // --- GPS ---
 var userMarker = null;

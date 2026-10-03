@@ -45,12 +45,20 @@ jobs:
           METEOCAT_API_KEY: ${{ secrets.METEOCAT_API_KEY }}
         run: python weekly_accumulation.py
 
+      # El dia 1 de cada mes genera el mensual del mes anterior i esborra els diaris de fa més de 2 mesos
+      - name: Run monthly accumulation
+        continue-on-error: true
+        env:
+          METEOCAT_API_KEY: ${{ secrets.METEOCAT_API_KEY }}
+        run: python monthly_accumulation.py
+
       - name: Commit and Push
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add -A dades_radar/ acumulats_diaris/ acumulats_setmanals/ bounds.json
+          mkdir -p acumulats_mensuals
+          git add -A dades_radar/ acumulats_diaris/ acumulats_setmanals/ acumulats_mensuals/ bounds.json
 
           if git diff --staged --quiet; then
             echo "No hi ha canvis per pujar."
