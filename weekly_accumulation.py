@@ -1,33 +1,62 @@
 import os
+import sys
 import requests
 import csv
 import xarray as xr
 import numpy as np
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import json
 from datetime import datetime, timedelta
 
 # --- CONFIGURACIÓ ---
-API_KEY = "5Rq09hMMoQ8JKQ87M9RxL5wM0dIW4HsU27G0WEjo" 
+# La clau es llegeix del secret del repositori (Settings > Secrets > Actions > METEOCAT_API_KEY)
+API_KEY = os.environ.get("METEOCAT_API_KEY", "").strip()
+TIMEOUT = 30
 BASE_URL = "https://api.meteo.cat/xema/v1"
 CODI_PLUJA = "1300"
 DAILY_DIR = "acumulats_diaris"
 WEEKLY_DIR = "acumulats_setmanals"
 
-def get_last_week_dates():
-    # Per defecte: d'ahir (diumenge) cap enrere 7 dies (dilluns)
+def setmanes_pendents():
+    """Retorna les setmanes (dilluns-diumenge) completes que encara no tenen acumulat setmanal.
+    Comença després de l'última setmana generada i acaba a l'últim diumenge que ja té acumulat diari."""
     today = datetime.utcnow().date()
-    start_date = today - timedelta(days=7)
-    end_date = today - timedelta(days=1)
-    return start_date, end_date
+    ultim_diumenge = today - timedelta(days=today.weekday() + 1)
+
+    finals = []
+    if os.path.exists(WEEKLY_DIR):
+        for f in os.listdir(WEEKLY_DIR):
+            if f.startswith("setmanal_") and f.endswith(".nc"):
+                try:
+                    finals.append(datetime.strptime(f[-11:-3], "%Y%m%d").date())
+                except ValueError:
+                    pass
+    if finals:
+        inici = max(finals) + timedelta(days=1)
+        inici -= timedelta(days=inici.weekday())  # alinear a dilluns
+    else:
+        inici = ultim_diumenge - timedelta(days=6)
+
+    setmanes = []
+    while inici + timedelta(days=6) <= ultim_diumenge:
+        fi = inici + timedelta(days=6)
+        nc_fi = os.path.join(DAILY_DIR, f"acumulat_{fi.strftime('%Y%m%d')}.nc")
+        if not os.path.exists(nc_fi):
+            print(f"⏳ Setmana {inici}–{fi}: encara falta l'acumulat diari del {fi}. Es deixa per més endavant.")
+            break
+        setmanes.append((inici, fi))
+        inici += timedelta(days=7)
+    return setmanes
 
 def check_stations_rain(start_date, end_date):
     print(f"🔍 Validant dades i calculant acumulats per estació des de {start_date} fins a {end_date}...")
     headers = {"X-Api-Key": API_KEY}
     
     # 1. Obtenir metadades COMPLETES (incloent coordenades)
-    res_est = requests.get(f"{BASE_URL}/estacions/metadades", headers=headers)
+    res_est = requests.get(f"{BASE_URL}/estacions/metadades", headers=headers, timeout=TIMEOUT)
     estacions_meta = res_est.json() if res_est.status_code == 200 else []
     
     # Creem un diccionari per acumular la setmana real i guardar coordenades
@@ -46,7 +75,7 @@ def check_stations_rain(start_date, end_date):
     dades_api = []
     for any_q, mes_q in mesos_a_demanar:
         url = f"{BASE_URL}/variables/estadistics/diaris/{CODI_PLUJA}?any={any_q}&mes={mes_q:02d}"
-        res = requests.get(url, headers=headers)
+        res = requests.get(url, headers=headers, timeout=TIMEOUT)
         if res.status_code == 200:
             dades_api.extend(res.json())
 
@@ -103,7 +132,7 @@ def generate_weekly_accumulation(start_date, end_date, validesa):
     current = start_date
     while current <= end_date:
         dia_id = current.strftime("%Y%m%d")
-        info = validesa.get(dia_id)
+        info = validesa.get(dia_id) or {'valid': False, 'max_nom': 'Sense dades', 'max_val': -1.0}
         path_nc = os.path.join(DAILY_DIR, f"acumulat_{dia_id}.nc")
         existeix = os.path.exists(path_nc)
 
@@ -199,8 +228,24 @@ def save_outputs(start_date, end_date, resum, csv_data, stats_estacions, data_ar
         plt.close(fig)
 
 if __name__ == "__main__":
-    start, end = get_last_week_dates()
-    val_dies, reg_csv, stats_setmanals = check_stations_rain(start, end)
-    res, data, ln, lt = generate_weekly_accumulation(start, end, val_dies)
-    save_outputs(start, end, res, reg_csv, stats_setmanals, data, ln, lt)
-    print(f"✅ Procés setmanal finalitzat. Generat GeoJSON per a {len(stats_setmanals)} estacions.")
+    if not API_KEY:
+        print("❌ Falta METEOCAT_API_KEY. Afegeix-la a Settings > Secrets and variables > Actions.")
+        sys.exit(1)
+
+    if len(sys.argv) > 1:
+        # Execució manual per a una setmana concreta: python weekly_accumulation.py 2026-09-07
+        start = datetime.strptime(sys.argv[1], "%Y-%m-%d").date()
+        setmanes = [(start, start + timedelta(days=6))]
+    else:
+        setmanes = setmanes_pendents()
+
+    if not setmanes:
+        print("ℹ️ No hi ha cap setmana pendent.")
+    for start, end in setmanes:
+        val_dies, reg_csv, stats_setmanals = check_stations_rain(start, end)
+        if not stats_setmanals:
+            print(f"❌ No s'han pogut obtenir les estacions per a {start}–{end}. S'atura el procés.")
+            sys.exit(1)
+        res, data, ln, lt = generate_weekly_accumulation(start, end, val_dies)
+        save_outputs(start, end, res, reg_csv, stats_setmanals, data, ln, lt)
+        print(f"✅ Setmana {start}–{end} generada ({len(stats_setmanals)} estacions).")

@@ -33,4 +33,9 @@ jobs:
           
           # Fem el commit. El "|| exit 0" evita que el workflow falli si no hi ha canvis
           git commit -m "🛰️ Radar: Afegit nou fitxer .nc" || exit 0
-          git push
+          # Si un altre workflow ha fet push mentrestant, reintentem amb rebase
+          for i in 1 2 3; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push && exit 0
+            sleep $((i * 5))
+          done
+          exit 1

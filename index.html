@@ -296,7 +296,7 @@ function toggleAspect() {
     if (!aspectLayer) {
         btn.classList.add("active");
         control.style.display = "flex";
-        aspectLayer = L.tileLayer('https://albverfar123.github.io/meteocat-radar/tiles_aspect/{z}/{x}/{y}.png', {
+        aspectLayer = L.tileLayer('tiles_aspect/{z}/{x}/{y}.png', {
             minZoom: 8, maxNativeZoom: 12, maxZoom: 22, opacity: 0.7
         }).addTo(map);
         if(overlayRadar) overlayRadar.bringToFront();

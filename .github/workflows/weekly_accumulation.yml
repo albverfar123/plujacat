@@ -1,39 +1,47 @@
 name: Acumulat Setmanal Radar
 
+# L'acumulat setmanal ja es genera automàticament dins del workflow diari.
+# Aquest workflow serveix per llançar-lo manualment (opcionalment per a una setmana concreta).
 on:
-  workflow_dispatch: # Manual
+  workflow_dispatch:
+    inputs:
+      dilluns:
+        description: 'Dilluns de la setmana a generar (AAAA-MM-DD). Buit = totes les pendents'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
 
 jobs:
   weekly:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.11'
 
       - name: Install dependencies
-        run: |
-          pip install requests xarray numpy netCDF4 matplotlib
+        run: pip install requests xarray numpy netCDF4 matplotlib
 
       - name: Run weekly accumulation
-        run: python weekly_accumulation.py
         env:
-          # Si vols amagar la key, posa-la a Secrets del repo
-          METEOCAT_API_KEY: ${{ secrets.METEOCAT_API_KEY }} 
+          METEOCAT_API_KEY: ${{ secrets.METEOCAT_API_KEY }}
+        run: python weekly_accumulation.py ${{ github.event.inputs.dilluns }}
 
       - name: Commit and Push results
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add acumulats_setmanals/*
+          git add acumulats_setmanals/
           git commit -m "📅 Acumulat setmanal generat amb validació XEMA" || exit 0
-          git push
+          for i in 1 2 3 4 5; do
+            git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" && git push && exit 0
+            sleep $((i * 10))
+          done
+          exit 1
