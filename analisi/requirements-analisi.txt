@@ -1,0 +1,9 @@
+pandas
+numpy
+scipy
+scikit-learn
+matplotlib
+xarray
+netCDF4
+jupyter
+nbconvert
