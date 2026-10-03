@@ -1,0 +1,9 @@
+RESUM SETMANAL: 2026-09-21 a 2026-09-27
+--------------------------------------------------
+20260921: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260922: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260923: ANTICICLÓ  -> Màxim: Pinós (0.1 mm)
+20260924: ANTICICLÓ  -> Màxim: Sant Pere Pescador (0.1 mm)
+20260925: ANTICICLÓ  -> Màxim: Benissanet (0.1 mm)
+20260926: ANTICICLÓ  -> Màxim: Girona (0.1 mm)
+20260927: ANTICICLÓ  -> Màxim: PN del Garraf - el Rascler (0.2 mm)

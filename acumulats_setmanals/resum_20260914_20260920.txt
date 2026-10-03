@@ -1,0 +1,9 @@
+RESUM SETMANAL: 2026-09-14 a 2026-09-20
+--------------------------------------------------
+20260914: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260915: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20260916: PLUJA      -> Vàlid: Canyelles (86.4 mm)
+20260917: PLUJA      -> Vàlid: el Vendrell (13.0 mm)
+20260918: PLUJA      -> Vàlid: Barcelona - el Raval (5.9 mm)
+20260919: ANTICICLÓ  -> Màxim: Banyoles (0.1 mm)
+20260920: ANTICICLÓ  -> Màxim: Santa Coloma de Queralt (0.1 mm)
