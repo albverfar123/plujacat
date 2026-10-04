@@ -1,0 +1,65 @@
+provider,sensor,component,componentType,type,unit,description,componentDesc,lat,lon,timeZone,xema_propera,dist_xema_km
+PLUVIOMETREACA-EST,080018-005-ANA016,080018-005,pluviometre,0012,mm/h,Intensitat de precipitació,Abrera (Llobregat),41.510745674,1.917310383,CET,XC,6.0
+PLUVIOMETREACA-EST,080462-001-ANA008,080462-001,pluviometre,0012,mm/h,Intensitat de precipitació,La Roca del Vallès (Mogent),41.619664895,2.360394416,CET,KX,0.13
+PLUVIOMETREACA-EST,080478-006-ANA004,080478-006,pluviometre,0012,mm/h,Intensitat de precipitació,Cardona (Cardener),41.920666218,1.696075185,CET,MQ,0.03
+PLUVIOMETREACA-EST,080538-005-ANA003,080538-005,pluviometre,0012,mm/h,Intensitat de precipitació,Castellbell i el Vilar (Llobregat),41.646561643,1.858396556,CET,VU,5.12
+PLUVIOMETREACA-EST,080581-002-ANA009,080581-002,pluviometre,0012,mm/h,Intensitat de precipitació,Embassament de Foix (Foix),41.255617318,1.651034658,CET,WZ,6.15
+PLUVIOMETREACA-EST,080581-003-ANA03,080581-003,pluviometre,0012,mm/h,Intensitat de precipitació,Castellet i la Gornal (Foix),41.265510765,1.634499867,CET,WZ,7.08
+PLUVIOMETREACA-EST,080826-002-ANA010,080826-002,pluviometre,0012,mm/h,Intensitat de precipitació,Fogars de la Selva (Tordera),41.738958347,2.693885954,CET,KP,0.04
+PLUVIOMETREACA-EST,080996-007-ANA009,080996-007,pluviometre,0012,mm/h,Intensitat de precipitació,Guardiola de Berguedà (Llobregat),42.214385565,1.869705979,CET,CN,1.73
+PLUVIOMETREACA-EST,081081-001-ANA001,081081-001,pluviometre,0012,mm/h,Intensitat de precipitació,Lliçà de Vall (Tenes),41.58640814,2.2456452,CET,XG,2.67
+PLUVIOMETREACA-EST,081419-003-ANA006,081419-003,pluviometre,0012,mm/h,Intensitat de precipitació,Embassament de La Llosa del Cavall (Cardener),42.099784969,1.58285827,CET,MV,8.45
+PLUVIOMETREACA-EST,081580-002-ANA008,081580-002,pluviometre,0012,mm/h,Intensitat de precipitació,El Papiol (Llobregat),41.448855953,1.995677423,CET,XC,3.74
+PLUVIOMETREACA-EST,082021-001-ANA001,082021-001,pluviometre,0012,mm/h,Intensitat de precipitació,Sant Celoni (Tordera),41.680341221,2.488976096,CET,UQ,7.64
+PLUVIOMETREACA-EST,082172-002-ANA014,082172-002,pluviometre,0012,mm/h,Intensitat de precipitació,Sant Joan Despí (Llobregat),41.351810642,2.046600124,CET,XL,3.07
+PLUVIOMETREACA-EST,082362-001-ANA003,082362-001,pluviometre,0012,mm/h,Intensitat de precipitació,Sant Quintí de Mediona (Mediona),41.458696562,1.664099955,CET,WP,3.83
+PLUVIOMETREACA-EST,082401-002-ANA002,082401-002,pluviometre,0012,mm/h,Intensitat de precipitació,Sant Sadurní d'Anoia (Anoia),41.443497484,1.788187977,CET,YO,1.0
+PLUVIOMETREACA-EST,082457-001-ANA002,082457-001,pluviometre,0012,mm/h,Intensitat de precipitació,Santa Coloma de Gramenet (Besòs),41.450597601,2.200589117,CET,WU,3.92
+PLUVIOMETREACA-EST,082634-001-ANA017,082634-001,pluviometre,0012,mm/h,Intensitat de precipitació,Sant Vicenç dels Horts (Llobregat),41.386564791,2.023355995,CET,X8,6.89
+PLUVIOMETREACA-EST,082687-001-ANA016,082687-001,pluviometre,0012,mm/h,Intensitat de precipitació,Embassament de La Baells (Llobregat),42.122014524,1.878559556,CET,WM,4.58
+PLUVIOMETREACA-EST,082747-007-ANA003,082747-007,pluviometre,0012,mm/h,Intensitat de precipitació,Súria (Cardener),41.81351335,1.762733581,CET,U4,7.25
+PLUVIOMETREACA-EST,083036-001-ANA024,083036-001,pluviometre,0012,mm/h,Intensitat de precipitació,Embassament de Sau (Ter),41.968624956,2.413554059,CET,KE,0.04
+PLUVIOMETREACA-EST,170059-001-ANA002,170059-001,pluviometre,0012,mm/h,Intensitat de precipitació,Santa Llogaia d'Àlguema (Manol),42.2377829,2.969057765,CET,U1,7.73
+PLUVIOMETREACA-EST,170221-002-ANA002,170221-002,pluviometre,0012,mm/h,Intensitat de precipitació,Bisbal d'Empordà (Daró),41.964586294,3.03821947,CET,DF,1.46
+PLUVIOMETREACA-EST,170558-002-ANA024,170558-002,pluviometre,0012,mm/h,Intensitat de precipitació,Colomers (Ter),42.076860022,2.991162733,CET,UB,6.38
+PLUVIOMETREACA-EST,170600-001-ANA022,170600-001,pluviometre,0012,mm/h,Intensitat de precipitació,Embassament de Darnius Boadella (Muga),42.340588782,2.833225165,CET,J5,0.19
+PLUVIOMETREACA-EST,170656-005-ANA008,170656-005,pluviometre,0012,mm/h,Intensitat de precipitació,Esponellà (Fluvià),42.177583121,2.798648637,CET,DJ,6.83
+PLUVIOMETREACA-EST,170792-003-ANA002,170792-003,pluviometre,0012,mm/h,Intensitat de precipitació,Girona (Onyar),41.975059495,2.824550321,CET,XJ,1.76
+PLUVIOMETREACA-EST,171169-001-ANA006,171169-001,pluviometre,0012,mm/h,Intensitat de precipitació,Embassament de Susqueda (Ter),41.979075237,2.527357457,CET,DN,8.81
+PLUVIOMETREACA-EST,171328-001-ANA002,171328-001,pluviometre,0012,mm/h,Intensitat de precipitació,Peralada (Llobregat d'Empordà),42.30530000000001,3.00755,CET,U1,4.34
+PLUVIOMETREACA-EST,171352-003-ANA007,171352-003,pluviometre,0012,mm/h,Intensitat de precipitació,Pont de Molins (Muga),42.31551754,2.917968379,CET,U1,3.19
+PLUVIOMETREACA-EST,171501-001-ANA003,171501-001,pluviometre,0012,mm/h,Intensitat de precipitació,Campllong (riera Gotarra),41.897979761,2.818842216,CET,UO,1.86
+PLUVIOMETREACA-EST,171674-006-ANA009,171674-006,pluviometre,0012,mm/h,Intensitat de precipitació,Sant Joan de les Abadesses (Ter),42.22466429,2.243255294,CET,M6,0.31
+PLUVIOMETREACA-EST,171707-001-ANA013,171707-001,pluviometre,0012,mm/h,Intensitat de precipitació,Ripoll (Ter),42.172192162,2.194229581,CET,CB,2.41
+PLUVIOMETREACA-EST,171714-001-ANA04,171714-001,pluviometre,0012,mm/h,Intensitat de precipitació,Sant Llorenç de la Muga (Muga),42.316501288,2.78190903,CET,J5,5.16
+PLUVIOMETREACA-EST,171812-001-ANA002,171812-001,pluviometre,0012,mm/h,Intensitat de precipitació,Santa Cristina d'Aro (Ridaura),41.81813956,2.979121769,CET,DO,4.54
+PLUVIOMETREACA-EST,171899-003-ANA033,171899-003,pluviometre,0012,mm/h,Intensitat de precipitació,Embassament de Pasteral (Ter),41.984436008,2.601414188,CET,DN,3.59
+PLUVIOMETREACA-EST,171910-001-ANA002,171910-001,pluviometre,0012,mm/h,Intensitat de precipitació,Serra de Daró (riu Daró),42.02500525,3.07138958,CET,UD,0.87
+PLUVIOMETREACA-EST,250753-004-ANA011,250753-004,pluviometre,0012,mm/h,Intensitat de precipitació,Embassament de Sant Ponç (Cardener),41.962942293,1.605613258,CET,CA,1.98
+PLUVIOMETREACA-EST,251116-004-ANA04,251116-004,pluviometre,0012,mm/h,Intensitat de precipitació,Guixers (Aigua de Valls),42.135943463,1.673105973,CET,MV,0.01
+PLUVIOMETREACA-EST,251462-001-ANA04,251462-001,pluviometre,0012,mm/h,Intensitat de precipitació,Navès (Aigua d'Ora),42.007056419,1.6524216,CET,MW,0.0
+PLUVIOMETREACA-EST,430430-001-ANA001,430430-001,pluviometre,0012,mm/h,Intensitat de precipitació,Embassament del Gaià (Gaià),41.195224935,1.327889195,CET,VY,6.66
+PLUVIOMETREACA-EST,430496-001-ANA005,430496-001,pluviometre,0012,mm/h,Intensitat de precipitació,Embassament de Siurana (Siurana),41.249642381,0.913800784,CET,MR,0.29
+PLUVIOMETREACA-EST,430496-002-ANA011,430496-002,pluviometre,0012,mm/h,Intensitat de precipitació,Cornudella de M_Assut  (Siurana),41.23441496317577,0.8909360029981839,CET,MR,2.46
+PLUVIOMETREACA-EST,430537-001-ANA007,430537-001,pluviometre,0012,mm/h,Intensitat de precipitació,Embassament de Riudecanyes (riera de Riudecanyes),41.134931354,0.960270444,CET,YL,1.57
+PLUVIOMETREACA-EST,430862-001-ANA002,430862-001,pluviometre,0012,mm/h,Intensitat de precipitació,Montblanc (Francolí),41.364783119,1.179845465,CET,CW,7.42
+PLUVIOMETREACA-EST,431652-001-ANA002,431652-001,pluviometre,0012,mm/h,Intensitat de precipitació,Vilabella (Gaià),41.233966843,1.33729486,CET,VY,3.74
+PLUVIOMETREACA-EST,080522-006-ANA007,080522-006,pluviometre,0012,mm/h,Intensitat de precipitació,Castellar de n'Hug (Llobregat),42.259779296,1.977477661,CET,MS,0.12
+PLUVIOMETREACA-EST,081918-009-ANA002,081918-009,pluviometre,0012,mm/h,Intensitat de precipitació,Artès (riera Gavarresa),41.787629375,1.91716489,CET,WW,1.79
+PLUVIOMETREACA-EST,170078-002-ANA002,170078-002,pluviometre,0012,mm/h,Intensitat de precipitació,Amer (Brugent),42.01420270104604,2.60201211698895,CET,DN,6.39
+PLUVIOMETREACA-EST,171595-001-ANA001,171595-001,pluviometre,0012,mm/h,Intensitat de precipitació,Sant Feliu de Buixalleu (riera d’Arbúcies),41.759972,2.5987,CET,KP,8.28
+PLUVIOMETREACA-EST,171479-012-ANA001,171479-012,pluviometre,0012,mm/h,Intensitat de precipitació,Ripoll (Freser),42.209238,2.1694,CET,M6,6.2
+PLUVIOMETREACA-EST,081326-001-ANA01,081326-001,pluviometre,0012,mm/h,Intensitat de precipitació,Montmajor,42.015384,1.7409,CET,MW,7.37
+PLUVIOMETREACA-EST,082129-001-ANA01,082129-001,pluviometre,0012,mm/h,"Intensitat de precipitació
+",Sant Feliu Sasserra,41.941832,2.0262,CET,V5,13.34
+PLUVIOMETREACA-EST,430363-001-ANA01,430363-001,pluviometre,0012,mm/h,Intensitat de precipitació,Cabra del Camp,41.37436000000001,1.3284,CET,DA,7.86
+PLUVIOMETREACA-EST,431515-001-ANA01,431515-001,pluviometre,0012,mm/h,Intensitat de precipitació,Torre de Fontaubella,41.12217,0.8597,CET,CH,4.39
+PLUVIOMETREACA-EST,080615-009-ANA001,080615-009,pluviometre,0012,mm/h,Intensitat de precipitació,Castellgalí (Cardener),41.684611,1.8369,CET,R1,3.84
+PLUVIOMETREACA-EST,431248-001-ANA03,431248-001,pluviometre,0012,mm/h,Intensitat de precipitació,La Riba (Brugent),41.319248,1.179,CET,CW,10.53
+PLUVIOMETREACA-EST,082397-001-ANA01,082397-001,pluviometre,0012,mm/h,Intensitat de precipitació,"Sant Quirze Safaja
+",41.71692,2.1743,CET,VX,11.2
+PLUVIOMETREACA-EST,082359-001-ANA01,082359-001,pluviometre,0012,mm/h,Intensitat de precipitació,"Sant Pol de Mar
+",41.60251,2.6085,CET,UR,13.01
+PLUVIOMETREACA-EST,431482-003-ANA005,431482-003,pluviometre,0012,mm/h,Intensitat de precipitació,"Tarragona
+",41.149079,1.236619,CET,XE,5.84
+PLUVIOMETREACA-EST,082845-004-ANA01,082845-004,pluviometre,0012,mm/h,Intensitat de precipitació,Tordera,41.64416,2.6755,CET,UR,6.39
