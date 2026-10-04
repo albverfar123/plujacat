@@ -16,6 +16,7 @@ jobs:
         with:
           sparse-checkout: |
             radar_to_nc.py
+            xarxes.py
             requirements.txt
           sparse-checkout-cone-mode: false
 
@@ -53,3 +54,29 @@ jobs:
             done
             echo "✅ $(basename "$f") → $tag"
           done
+
+      # AEMET només dona les observacions horàries de les últimes ~12 h: en desem una còpia
+      # cada 3 h (la primera execució de cada franja) a la Release del dia. El workflow diari
+      # en calcula la pluja diària 00–24 UTC.
+      - name: Recollir observacions AEMET (cada 3 h)
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AEMET_API_KEY: ${{ secrets.AEMET_API_KEY }}
+        run: |
+          ara=$(date -u +%Y%m%d%H)
+          dia=${ara:0:8}
+          franja=$(printf "%02d" $(( 10#${ara:8:2} / 3 * 3 )))
+          nom="aemet_${dia}T${franja}.json"
+          tag="radar-${dia}"
+          if gh release view "$tag" --json assets --jq '.assets[].name' 2>/dev/null | grep -qx "$nom"; then
+            echo "Franja ${franja} h ja recollida ($nom)"
+            exit 0
+          fi
+          gh release view "$tag" >/dev/null 2>&1 || \
+            gh release create "$tag" --prerelease --title "Radar ${dia} (6 min, temporal)" \
+              --notes "Imatges de radar de 6 min del ${dia} pendents de processar. S'esborra automàticament quan el workflow diari les arxiva." \
+            || true
+          python xarxes.py recollir-aemet "$nom"
+          gh release upload "$tag" "$nom" --clobber
+          echo "✅ $nom → $tag"

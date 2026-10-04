@@ -1,0 +1,53 @@
+name: Altres xarxes – recuperar històric ACA
+
+# L'API de l'ACA només guarda uns quants mesos de dades. Aquest workflow manual baixa la pluja
+# diària (00–24 UTC) dels pluviòmetres ACA entre dues dates i en calcula les parelles amb el radar.
+on:
+  workflow_dispatch:
+    inputs:
+      des:
+        description: 'Primer dia (AAAA-MM-DD)'
+        required: true
+        default: '2026-06-01'
+      fins:
+        description: 'Últim dia (AAAA-MM-DD). Buit = ahir'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: xarxes-backfill
+
+jobs:
+  backfill:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests numpy xarray netCDF4
+
+      - name: Recuperar ACA
+        run: python xarxes.py backfill-aca ${{ inputs.des }} ${{ inputs.fins }}
+
+      - name: Commit and Push results
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A validacio/ acumulats_diaris/
+          git commit -m "💧 Històric ACA ${{ inputs.des }} → ${{ inputs.fins }}" || exit 0
+          for i in 1 2 3 4 5; do
+            git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" && git push && exit 0
+            sleep $((i * 10))
+          done
+          exit 1

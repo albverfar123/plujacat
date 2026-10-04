@@ -39,7 +39,7 @@ MONTHLY_DIR = "acumulats_mensuals"
 MESOS_A_CONSERVAR = 2   # mesos anteriors a l'actual que es conserven en diari
 LLINDAR_PLUJA = 1.0     # mm: si cap estació arriba a aquest valor, el dia es considera sec
 
-DAILY_PREFIXES = ("acumulat_", "fonts_acumulat_", "estacions_")
+DAILY_PREFIXES = ("acumulat_", "fonts_acumulat_", "estacions_", "xarxes_")
 
 
 def api_get(path):

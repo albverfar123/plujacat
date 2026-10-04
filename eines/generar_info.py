@@ -21,6 +21,7 @@ ESTRUCTURA = """## Estructura del repositori · Estructura del repositorio · Re
 | `weekly_accumulation.py` · `monthly_accumulation.py` | Acumulats setmanals i mensuals → `acumulats_setmanals/`, `acumulats_mensuals/` |
 | `calibracio_radar.py` · `config_calibracio.json` | Calibració operativa (taula de colors + correcció amb estacions) |
 | `validacio.py` · `validacio/` | Dades radar–estació per validar i recalibrar |
+| `xarxes.py` · `validacio/xarxes/` | Altres xarxes d'estacions (ACA, AEMET): pluja diària i parelles amb el radar per a validació |
 | `analisi/` | Notebooks de diagnosi i calibració ([resum](analisi/README.md)) |
 | `eines/` | Scripts puntuals (reprocessar, extreure dades de l'historial, generar aquest README) |
 | `.github/workflows/` | Automatització (GitHub Actions) |

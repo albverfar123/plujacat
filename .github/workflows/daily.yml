@@ -35,7 +35,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          mkdir -p dades_radar
+          mkdir -p dades_radar dades_aemet
           avui=$(date -u +%Y%m%d)
           for tag in $(gh release list --limit 200 --json tagName --jq '.[].tagName' | grep -E '^radar-[0-9]{8}$' | sort); do
             dia=${tag#radar-}
@@ -43,8 +43,10 @@ jobs:
               echo "⬇️ $tag"
               gh release download "$tag" -D dades_radar -p 'radar_*.nc' --skip-existing
             fi
+            # còpies horàries d'AEMET (també les d'avui, que completen el dia d'ahir)
+            gh release download "$tag" -D dades_aemet -p 'aemet_*.json' --skip-existing 2>/dev/null || true
           done
-          echo "Fitxers a dades_radar: $(ls dades_radar | wc -l)"
+          echo "Fitxers a dades_radar: $(ls dades_radar | wc -l) · dades_aemet: $(ls dades_aemet | wc -l)"
 
       # Processa TOTS els dies pendents a dades_radar (no només ahir) i les estacions
       - name: Run daily accumulation
@@ -53,6 +55,11 @@ jobs:
         run: |
           mkdir -p dades_radar acumulats_diaris acumulats_setmanals
           python daily_accumulation.py
+
+      # Pluja diària d'altres xarxes (ACA, AEMET) i parelles amb el radar (només validació i visor)
+      - name: Altres xarxes (ACA, AEMET)
+        continue-on-error: true
+        run: python xarxes.py diari dades_aemet
 
       # Genera les setmanes (dl-dg) completes que encara no existeixin
       - name: Run weekly accumulation
@@ -99,6 +106,15 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           shopt -s nullglob
+          # dades horàries d'AEMET de cada dia (no s'esborra res)
+          for f in arxiu_radar/aemet_horari_*.csv; do
+            dia=$(basename "$f" .csv | cut -c14-21)
+            arxiu="radar-arxiu-${dia:0:6}"
+            gh release view "$arxiu" >/dev/null 2>&1 || \
+              gh release create "$arxiu" --title "Arxiu radar ${dia:0:4}-${dia:4:2}" \
+                --notes "Imatges de radar de 6 min empaquetades per dia (format descrit a arxiu_radar.py)." || true
+            gh release upload "$arxiu" "$f" --clobber && echo "📦 $(basename "$f") → $arxiu" || true
+          done
           for f in arxiu_radar/radar_*.nc; do
             dia=$(basename "$f" .nc | cut -c7-14)
             mes=${dia:0:6}
