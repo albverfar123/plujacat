@@ -555,6 +555,21 @@ const MESOS = ["Gener", "Febrer", "Març", "Abril", "Maig", "Juny", "Juliol", "A
 function setMode(mode) {
     viewMode = mode;
     ["Daily", "Weekly", "Monthly"].forEach(k => document.getElementById("mode" + k).classList.toggle('active', mode === k.toLowerCase()));
+    if (mode === 'weekly') {
+        // La setmana en curs encara no té acumulat: mostrem l'última setmana tancada (dl–dg)
+        const picker = document.getElementById("datePicker");
+        const now = new Date();
+        const today = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+        const mondayThisWeek = new Date(today); mondayThisWeek.setUTCDate(today.getUTCDate() - (today.getUTCDay() + 6) % 7);
+        let [y, m, d] = picker.value.split("-").map(Number);
+        let sel = new Date(Date.UTC(y, m - 1, d));
+        if (sel >= mondayThisWeek) {
+            sel = new Date(mondayThisWeek); sel.setUTCDate(sel.getUTCDate() - 7);
+        } else {
+            sel.setUTCDate(sel.getUTCDate() - (sel.getUTCDay() + 6) % 7);
+        }
+        picker.value = sel.toISOString().slice(0,10);
+    }
     if (mode === 'monthly') {
         // El mes en curs encara no té mensual: mostrem l'últim mes tancat
         const picker = document.getElementById("datePicker");
@@ -573,6 +588,12 @@ function shiftDate(dir) {
     if (viewMode === 'monthly') {
         let dt = new Date(y, m - 1 + dir, 1);
         picker.value = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-01`;
+    } else if (viewMode === 'weekly') {
+        // Saltem al dilluns de la setmana anterior/següent
+        let dt = new Date(Date.UTC(y, m - 1, d));
+        const dow = (dt.getUTCDay() + 6) % 7;   // 0 = dilluns
+        dt.setUTCDate(dt.getUTCDate() - dow + 7 * dir);
+        picker.value = dt.toISOString().slice(0,10);
     } else {
         let dt = new Date(Date.UTC(y, m - 1, d + dir));
         picker.value = dt.toISOString().slice(0,10);
