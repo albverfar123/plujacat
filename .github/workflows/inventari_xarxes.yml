@@ -4,6 +4,12 @@ name: Inventari d'altres xarxes d'estacions
 # i una mostra de dades de cada API i ho desa a validacio/xarxes/. Només s'executa a mà.
 on:
   workflow_dispatch:
+    inputs:
+      tasca:
+        description: 'Què executar'
+        type: choice
+        options: [comprovacions, inventari, tot]
+        default: comprovacions
 
 permissions:
   contents: write
@@ -28,18 +34,28 @@ jobs:
         run: pip install requests
 
       - name: Inventari
+        if: inputs.tasca != 'comprovacions'
         env:
           AEMET_API_KEY: ${{ secrets.AEMET_API_KEY }}
         run: |
           python eines/inventari_xarxes.py
           cat validacio/xarxes/resum_inventari.md >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Comprovacions (ACA vs XEMA, històric ACA, climatologies AEMET)
+        if: inputs.tasca != 'inventari'
+        env:
+          AEMET_API_KEY: ${{ secrets.AEMET_API_KEY }}
+          METEOCAT_API_KEY: ${{ secrets.METEOCAT_API_KEY }}
+        run: |
+          python eines/comprovar_xarxes.py
+          cat validacio/xarxes/resum_comprovacions.md >> "$GITHUB_STEP_SUMMARY"
+
       - name: Commit and Push results
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add validacio/xarxes/
-          git commit -m "🗂️ Inventari d'estacions AEMET i ACA" || exit 0
+          git commit -m "🗂️ Inventari/comprovacions d'estacions AEMET i ACA" || exit 0
           for i in 1 2 3 4 5; do
             git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" && git push && exit 0
             sleep $((i * 10))
