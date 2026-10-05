@@ -81,7 +81,6 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
           mkdir -p acumulats_mensuals validacio
-          git add -u dades_radar/   # només esborrats: les imatges noves ja no entren a git
           git add -A acumulats_diaris/ acumulats_setmanals/ acumulats_mensuals/ validacio/ bounds.json
 
           if git diff --staged --quiet; then
