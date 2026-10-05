@@ -1,4 +1,4 @@
-# Anàlisi i calibració del radar amb les estacions XEMA
+# Anàlisi i calibració del radar amb les estacions
 
 Aquesta carpeta documenta com s'ha avaluat i millorat l'estimació de pluja de PlujaCat, que converteix els colors de les imatges del radar del Meteocat en mm. Tot el procés és reproduïble i es pot seguir als notebooks. GitHub els mostra amb els gràfics i les taules sense haver d'executar res.
 
@@ -7,6 +7,7 @@ Aquesta carpeta documenta com s'ha avaluat i millorat l'estimació de pluja de P
 | [`01_diagnosi.ipynb`](01_diagnosi.ipynb) | Quin error té el producte actual? Les dades XEMA són fiables i comparables? |
 | [`02_ajust_taula_colors.ipynb`](02_ajust_taula_colors.ipynb) | Quin valor (mm/h) hauria de tenir cada color del radar? |
 | [`03_correccio_estacions.ipynb`](03_correccio_estacions.ipynb) | Quant millora si corregim el radar amb les estacions de cada dia? |
+| [`04_validacio_independent.ipynb`](04_validacio_independent.ipynb) | Es confirma amb pluviòmetres que el pipeline no fa servir (ACA, AEMET)? Val la pena afegir l'ACA a la correcció? |
 
 **Dades:** del 5 de març al 2 d'octubre de 2026, 187 estacions XEMA, unes 39.000 parelles estació-dia, de les quals unes 5.000 tenen pluja (≥1 mm). Les dades surten del mateix pipeline (`validacio/`) i de l'historial de git (`eines/`).
 
@@ -38,6 +39,18 @@ Aquesta carpeta documenta com s'ha avaluat i millorat l'estimació de pluja de P
 
 ![Biaix per estació abans i després](figures/03_biaix_espacial_corregit.png)
 
+**5. La validació independent amb l'ACA ho confirma.** Als ~45 pluviòmetres de l'ACA que no comparteixen aparell amb la XEMA, i que el pipeline no fa servir, el producte final té el mateix error que la XEMA amb *leave-one-out* (agost–octubre 2026):
+
+| | Total estimat / observat | Correlació | Error mitjà (mm/dia) | Mesos dins de ±25% |
+|---|---|---|---|---|
+| ACA · taula antiga | 0,40 | 0,68 | 12,6 | 20% |
+| ACA · producte final | **0,92** | **0,91** | **5,8** | **48%** |
+| XEMA · producte final (*leave-one-out*) | 0,88 | 0,88 | 6,0 | 42% |
+
+En aquest període l'error mitjà és més alt que a la taula anterior perquè hi ha hagut molts episodis de pluja intensa. Afegir l'ACA a la correcció millora poc l'error mitjà (~3 %), i l'ACA té un artefacte recurrent (~10 mm aïllats amb el radar i els veïns a 0). Per ara no entra a la correcció.
+
+![Validació amb els pluviòmetres ACA](figures/04_validacio_aca.png)
+
 ## Aplicació al pipeline
 
 Des del 3 d'octubre de 2026, els acumulats diaris es calculen així (`calibracio_radar.py`, paràmetres a [`config_calibracio.json`](../config_calibracio.json)):
@@ -57,7 +70,7 @@ Els diaris des de l'1 d'agost s'han reprocessat amb la calibració (`eines/repro
 - Una correcció multiplicativa no pot crear pluja on el radar marca 0.
 - La taula ajustada augmenta lleugerament les falses alarmes, del 1% al 3–5% dels dies secs.
 - Queda una subestimació global d'un 10%.
-- Pas pendent: validar amb una xarxa independent (AEMET).
+- Validació independent: feta amb l'ACA (notebook 04). AEMET s'hi afegirà quan hi hagi prou dies (la recollida va començar el 4/10/2026).
 
 ## Reproduir l'anàlisi
 

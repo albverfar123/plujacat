@@ -190,7 +190,44 @@ def aemet_clim():
     desar_json("aemet_prova_climatologia.json", crues)
 
 
+# ------------------------------------------------------------------ 4. Pics aïllats de l'ACA
+
+def pics_aca():
+    """Baixa les dades de 5 min dels casos de 'pluja fantasma' (notebook 04) per veure si són
+    un sol valor aïllat. Desa validacio/xarxes/pics_5min.csv."""
+    log("## 4. Pluja fantasma ACA: dades de 5 min")
+    with open(os.path.join(OUT, "casos_pluja_fantasma.csv"), encoding="utf-8") as f:
+        casos = list(csv.DictReader(f))
+    files = []
+    for c in casos:
+        dia = date.fromisoformat(c["data"])
+        ini = datetime(dia.year, dia.month, dia.day, tzinfo=timezone.utc)
+        try:
+            obs = aca_data("PLUVIOMETREACA-EST", c["codi"], ini, ini + timedelta(days=1))
+        except Exception as e:
+            log(f"- ⚠️ {c['nom']} {c['data']}: {e}")
+            continue
+        no_zero = [o for o in obs if float(o["value"]) > 0]
+        log(f"- {c['data']} {c['nom']}: {len(obs)} valors, {len(no_zero)} no nuls: "
+            + ", ".join(f"{o['timestamp'][11:16]}={o['value']}" for o in no_zero[:12]))
+        for o in obs:
+            files.append({"data": c["data"], "codi": c["codi"], "nom": c["nom"],
+                          "timestamp": o["timestamp"], "time_ms": o["time"], "valor": o["value"]})
+        time.sleep(0.5)
+    if files:
+        with open(os.path.join(OUT, "pics_5min.csv"), "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=list(files[0]))
+            w.writeheader()
+            w.writerows(files)
+
+
 def main():
+    if sys.argv[1:2] == ["pics"]:
+        log(f"# Comprovacions de xarxes ({datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC)")
+        pics_aca()
+        with open(os.path.join(OUT, "resum_comprovacions.md"), "w", encoding="utf-8") as fh:
+            fh.write("\n".join(resum) + "\n")
+        return
     dies = sys.argv[1:] or DIES_PER_DEFECTE
     log(f"# Comprovacions de xarxes ({datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC)")
     log("")

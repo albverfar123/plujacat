@@ -8,7 +8,7 @@ on:
       tasca:
         description: 'Què executar'
         type: choice
-        options: [comprovacions, inventari, tot]
+        options: [comprovacions, inventari, tot, pics]
         default: comprovacions
 
 permissions:
@@ -34,7 +34,7 @@ jobs:
         run: pip install requests
 
       - name: Inventari
-        if: inputs.tasca != 'comprovacions'
+        if: inputs.tasca == 'inventari' || inputs.tasca == 'tot'
         env:
           AEMET_API_KEY: ${{ secrets.AEMET_API_KEY }}
         run: |
@@ -42,12 +42,18 @@ jobs:
           cat validacio/xarxes/resum_inventari.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Comprovacions (ACA vs XEMA, històric ACA, climatologies AEMET)
-        if: inputs.tasca != 'inventari'
+        if: inputs.tasca == 'comprovacions' || inputs.tasca == 'tot'
         env:
           AEMET_API_KEY: ${{ secrets.AEMET_API_KEY }}
           METEOCAT_API_KEY: ${{ secrets.METEOCAT_API_KEY }}
         run: |
           python eines/comprovar_xarxes.py
+          cat validacio/xarxes/resum_comprovacions.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Pluja fantasma ACA (dades de 5 min)
+        if: inputs.tasca == 'pics'
+        run: |
+          python eines/comprovar_xarxes.py pics
           cat validacio/xarxes/resum_comprovacions.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Commit and Push results

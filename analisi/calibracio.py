@@ -270,6 +270,51 @@ def ajust_cv(df, model="lliure", n_folds=10, normalitzar=True):
     return est, fit(np.where(ok)[0])
 
 
+# ------------------------------------------------------------------ altres xarxes (notebook 04)
+
+def taula_operativa():
+    """Valors calibrats de config_calibracio.json, en l'ordre de CLASSES."""
+    import json
+    with open(os.path.join(ARREL, "config_calibracio.json"), encoding="utf-8") as f:
+        t = json.load(f)["taula"]
+    return [t[k] for k in sorted(t, key=float)]
+
+
+def carregar_xarxes(desde="2026-08-01"):
+    """Taula conjunta XEMA + ACA (+ AEMET) per estació i dia, només dies amb tots dos tipus de dada.
+
+    - XEMA: radar amb la taula operativa calculat dels recomptes de classes (com el pipeline).
+    - ACA / AEMET: valors del radar desats pel pipeline (validacio/parelles_xarxes/).
+      'radar_final_px' és el producte operatiu (corregit només amb la XEMA).
+    Columna 'taula' = radar amb la taula ajustada, sense correcció amb estacions."""
+    x = carregar(desde=desde)
+    x["taula"] = radar_amb_taula(x, taula_operativa(), normalitzar=True)
+    x["xarxa"], x["duplicat_xema"] = "XEMA", 0
+    px = pd.concat(pd.read_csv(f) for f in sorted(glob.glob(os.path.join(VALIDACIO, "parelles_xarxes", "*.csv"))))
+    px = px[px["data"] >= desde].rename(columns={"pluja_estacio": "obs", "radar_taula_px": "taula"})
+    px["data"] = pd.to_datetime(px["data"])
+    px["nom"] = px["nom"].astype(str).str.strip()
+    dies = set(x.data) & set(px.data)
+    cols = ["data", "codi", "nom", "lat", "lon", "obs", "taula", "xarxa", "duplicat_xema"]
+    df = pd.concat([x.loc[x.data.isin(dies), cols],
+                    px.loc[px.data.isin(dies), cols + ["radar_original_px", "radar_final_px", "dist_xema_km"]]],
+                   ignore_index=True)
+    df["radar_px"] = df["taula"]
+    return df
+
+
+def control_qualitat_xarxes(df, radi_km=20, min_veins=2):
+    """control_qualitat amb els veïns de totes les xarxes (sense els duplicats de la XEMA), més:
+    - 'pluja_fantasma': l'estació marca >= 5 mm però els veïns (mediana) < 1 mm i el radar < 0,5 mm.
+      Detecta els ~10 mm aïllats de l'ACA (probable valor erroni d'un sol interval de 5 min)."""
+    base = df[df.duplicat_xema != 1]
+    out = control_qualitat(base, radi_km=radi_km, min_veins=min_veins)
+    fant = (out.obs >= 5) & (out.mediana_veins < 1) & (out.taula < 0.5)
+    out.loc[fant & out.qc_ok, "qc_flag"] = "pluja_fantasma"
+    out["qc_ok"] = out["qc_flag"] == ""
+    return out
+
+
 # ------------------------------------------------------------------ estil de gràfics
 
 COLORS = {"blau": "#2a78d6", "taronja": "#eb6834", "aqua": "#1baf7a",
