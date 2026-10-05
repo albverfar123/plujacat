@@ -1,0 +1,9 @@
+RESUM SETMANAL: 2026-09-28 a 2026-10-04
+--------------------------------------------------
+20260928: PLUJA      -> Vàlid: Blancafort (7.9 mm)
+20260929: PLUJA      -> Vàlid: Torroella de Montgrí (116.3 mm)
+20260930: PLUJA      -> Vàlid: Tàrrega (27.9 mm)
+20261001: PLUJA      -> Vàlid: Mas de Barberans (95.4 mm)
+20261002: PLUJA      -> Vàlid: les Cases d'Alcanar (253.7 mm)
+20261003: PLUJA      -> Vàlid: Barcelona - el Raval (190.8 mm)
+20261004: PLUJA      -> Vàlid: Castell d'Aro (168.6 mm)
