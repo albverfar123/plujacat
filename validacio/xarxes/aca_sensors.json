@@ -156,18 +156,6 @@
   "duplicat_xema": false
  },
  {
-  "codi": "082362-001-ANA003",
-  "component": "082362-001",
-  "nom": "Sant Quintí de Mediona (Mediona)",
-  "lat": 41.4587,
-  "lon": 1.6641,
-  "unitat": "mm/h",
-  "estat": "online",
-  "xema_propera": "WP",
-  "dist_xema_km": 3.83,
-  "duplicat_xema": false
- },
- {
   "codi": "082401-002-ANA002",
   "component": "082401-002",
   "nom": "Sant Sadurní d'Anoia (Anoia)",
@@ -717,6 +705,18 @@
   "estat": "online",
   "xema_propera": "UR",
   "dist_xema_km": 6.39,
+  "duplicat_xema": false
+ },
+ {
+  "codi": "082362-002-ANA03",
+  "component": "082362-002",
+  "nom": "Sant Quintí de Mediona (Mediona)",
+  "lat": 41.4587,
+  "lon": 1.6641,
+  "unitat": "mm/h",
+  "estat": "online",
+  "xema_propera": "WP",
+  "dist_xema_km": 3.83,
   "duplicat_xema": false
  }
 ]
