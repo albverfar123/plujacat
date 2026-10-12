@@ -1,0 +1,9 @@
+RESUM SETMANAL: 2026-10-05 a 2026-10-11
+--------------------------------------------------
+20261005: PLUJA      -> Vàlid: Granollers (108.1 mm)
+20261006: PLUJA      -> Vàlid: Aldover (83.6 mm)
+20261007: PLUJA      -> Vàlid: Oliana (19.0 mm)
+20261008: PLUJA      -> Vàlid: Banyoles (37.9 mm)
+20261009: ANTICICLÓ  -> Màxim: Fogars de la Selva (0.2 mm)
+20261010: ANTICICLÓ  -> Màxim: Caldes de Montbui (0.1 mm)
+20261011: ANTICICLÓ  -> Màxim: Cassà de la Selva (0.2 mm)
