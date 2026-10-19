@@ -1,0 +1,9 @@
+RESUM SETMANAL: 2026-10-12 a 2026-10-18
+--------------------------------------------------
+20261012: ANTICICLÓ  -> Màxim: el Prat de Llobregat (0.8 mm)
+20261013: ANTICICLÓ  -> Màxim: la Quar (0.2 mm)
+20261014: ANTICICLÓ  -> Màxim: Pinós (0.3 mm)
+20261015: ANTICICLÓ  -> Màxim: Guardiola de Berguedà (0.3 mm)
+20261016: ANTICICLÓ  -> Màxim: Cantonigròs (0.4 mm)
+20261017: PLUJA      -> Vàlid: Sant Pere de Ribes - PN del Garraf (84.2 mm)
+20261018: PLUJA      -> Vàlid: Montesquiu (52.9 mm)
