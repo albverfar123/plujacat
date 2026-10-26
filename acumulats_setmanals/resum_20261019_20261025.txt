@@ -1,0 +1,9 @@
+RESUM SETMANAL: 2026-10-19 a 2026-10-25
+--------------------------------------------------
+20261019: PLUJA      -> Vàlid: Ulldeter (2.413 m) (74.5 mm)
+20261020: PLUJA      -> Vàlid: Fornells de la Selva (11.6 mm)
+20261021: PLUJA      -> Vàlid: Bonaigua (2.262 m) (4.0 mm)
+20261022: ANTICICLÓ  -> Màxim: Guardiola de Berguedà (0.2 mm)
+20261023: PLUJA      -> Vàlid: Cabrils (25.4 mm)
+20261024: PLUJA      -> Vàlid: Mataró (4.6 mm)
+20261025: PLUJA      -> Vàlid: Lac Redon (2.245 m) (2.2 mm)
