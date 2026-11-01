@@ -1,0 +1,37 @@
+RESUM MENSUAL: 2026-10
+--------------------------------------------------
+20261001: PLUJA      -> Mas de Barberans (95.4 mm)
+20261002: PLUJA      -> les Cases d'Alcanar (253.7 mm)
+20261003: PLUJA      -> Barcelona - el Raval (190.8 mm)
+20261004: PLUJA      -> Castell d'Aro (168.6 mm)
+20261005: PLUJA      -> Granollers (108.1 mm)
+20261006: PLUJA      -> Aldover (83.6 mm)
+20261007: PLUJA      -> Oliana (19.0 mm)
+20261008: PLUJA      -> Banyoles (37.9 mm)
+20261009: ANTICICLÓ  -> Màxim: Certascan (2.398 m) (0.3 mm)
+20261010: ANTICICLÓ  -> Màxim: Castellnou de Seana (0.0 mm)
+20261011: ANTICICLÓ  -> Màxim: Cassà de la Selva (0.1 mm)
+20261012: ANTICICLÓ  -> Màxim: el Prat de Llobregat (0.8 mm)
+20261013: ANTICICLÓ  -> Màxim: la Quar (0.2 mm)
+20261014: ANTICICLÓ  -> Màxim: Pinós (0.3 mm)
+20261015: ANTICICLÓ  -> Màxim: Guardiola de Berguedà (0.3 mm)
+20261016: ANTICICLÓ  -> Màxim: Cantonigròs (0.4 mm)
+20261017: PLUJA      -> Sant Pere de Ribes - PN del Garraf (84.2 mm)
+20261018: PLUJA      -> Montesquiu (52.9 mm)
+20261019: PLUJA      -> Ulldeter (2.413 m) (74.5 mm)
+20261020: PLUJA      -> Fornells de la Selva (11.6 mm)
+20261021: PLUJA      -> Bonaigua (2.262 m) (4.0 mm)
+20261022: ANTICICLÓ  -> Màxim: Banyoles (0.1 mm)
+20261023: PLUJA      -> Cabrils (25.4 mm)
+20261024: PLUJA      -> Mataró (4.6 mm)
+20261025: PLUJA      -> Lac Redon (2.245 m) (2.5 mm)
+20261026: ANTICICLÓ  -> Màxim: Fogars de la Selva (0.1 mm)
+20261027: ANTICICLÓ  -> Màxim: PN del Garraf - el Rascler (0.3 mm)
+20261028: ANTICICLÓ  -> Màxim: Lac Redon (2.245 m) (0.3 mm)
+20261029: ANTICICLÓ  -> Màxim: Viladrau (0.3 mm)
+20261030: PLUJA      -> els Alfacs (6.6 mm)
+20261031: PLUJA      -> Illa de Buda (31.1 mm)
+--------------------------------------------------
+Dies amb pluja sumats: 18
+Dies secs (no sumats): 13
+Dies amb pluja però sense radar: 0
