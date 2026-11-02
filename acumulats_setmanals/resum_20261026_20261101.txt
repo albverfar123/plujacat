@@ -1,0 +1,9 @@
+RESUM SETMANAL: 2026-10-26 a 2026-11-01
+--------------------------------------------------
+20261026: ANTICICLÓ  -> Màxim: Fogars de la Selva (0.1 mm)
+20261027: ANTICICLÓ  -> Màxim: PN del Garraf - el Rascler (0.3 mm)
+20261028: ANTICICLÓ  -> Màxim: Lac Redon (2.245 m) (0.6 mm)
+20261029: ANTICICLÓ  -> Màxim: Viladrau (0.3 mm)
+20261030: PLUJA      -> Vàlid: els Alfacs (6.6 mm)
+20261031: PLUJA      -> Vàlid: Illa de Buda (31.1 mm)
+20261101: ANTICICLÓ  -> Màxim: el Perelló (0.3 mm)
