@@ -335,7 +335,7 @@ data,xarxa,codi,nom,lat,lon,pluja,n_obs,xema_propera,dist_xema_km,duplicat_xema
 2026-11-06,ACA,171352-003-ANA007,Pont de Molins (Muga),42.31552,2.91797,0.0,288,U1,3.19,0
 2026-11-06,ACA,171479-012-ANA001,Ripoll (Freser),42.20924,2.1694,0.0,288,M6,6.2,0
 2026-11-06,ACA,171501-001-ANA003,Campllong (riera Gotarra),41.89798,2.81884,0.0,288,UO,1.86,0
-2026-11-06,ACA,171595-001-ANA001,Sant Feliu de Buixalleu (riera d’Arbúcies),41.75997,2.5987,,184,KP,8.28,0
+2026-11-06,ACA,171595-001-ANA001,Sant Feliu de Buixalleu (riera d’Arbúcies),41.75997,2.5987,,185,KP,8.28,0
 2026-11-06,ACA,171674-006-ANA009,Sant Joan de les Abadesses (Ter),42.22466,2.24326,0.1,288,M6,0.31,1
 2026-11-06,ACA,171707-001-ANA013,Ripoll (Ter),42.17219,2.19423,0.0,287,CB,2.41,0
 2026-11-06,ACA,171714-001-ANA04,Sant Llorenç de la Muga (Muga),42.3165,2.78191,0.0,288,J5,5.16,0
