@@ -1,0 +1,9 @@
+RESUM SETMANAL: 2026-11-02 a 2026-11-08
+--------------------------------------------------
+20261102: PLUJA      -> Vàlid: Tarragona - Complex Educatiu (30.7 mm)
+20261103: PLUJA      -> Vàlid: Torredembarra (112.2 mm)
+20261104: PLUJA      -> Vàlid: PN dels Ports (5.7 mm)
+20261105: PLUJA      -> Vàlid: Ulldecona - els Valentins (14.5 mm)
+20261106: PLUJA      -> Vàlid: Portbou - coll dels Belitres (1.4 mm)
+20261107: PLUJA      -> Vàlid: Roses (2.1 mm)
+20261108: ANTICICLÓ  -> Màxim: els Hostalets de Pierola (0.2 mm)
