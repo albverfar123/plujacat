@@ -1,0 +1,68 @@
+name: Sèrie diària completa (NetCDF)
+
+# Recalcula tots els dies des de l'inici del projecte amb la calibració actual i els desa en un
+# sol NetCDF (eix temporal diari) a la Release "serie-diaria". Només s'executa a mà.
+on:
+  workflow_dispatch:
+    inputs:
+      des:
+        description: 'Primer dia (AAAAMMDD)'
+        required: false
+        default: '20260101'
+      fins:
+        description: 'Últim dia (AAAAMMDD). Buit = tots els dies arxivats'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: serie-diaria
+
+jobs:
+  serie:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+
+    steps:
+      - name: "Checkout amb tot l'historial (hi ha les imatges fins al 03/10/2026)"
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install numpy netCDF4 xarray
+
+      - name: Descarregar els paquets diaris arxivats (des del 03/10/2026)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p paquets
+          for tag in $(gh release list --limit 200 --json tagName --jq '.[].tagName' | grep -E '^radar-arxiu-[0-9]{6}$' | sort); do
+            echo "⬇️ $tag"
+            gh release download "$tag" -D paquets -p 'radar_*.nc' --skip-existing
+          done
+          echo "Paquets: $(ls paquets | wc -l)"
+
+      - name: Generar la sèrie
+        run: |
+          fins="${{ inputs.fins }}"
+          python eines/serie_diaria.py serie_diaria_plujacat.nc --paquets paquets \
+            --des "${{ inputs.des }}" --fins "${fins:-29991231}" | tee serie.log
+          tail -1 serie.log >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Pujar a la Release serie-diaria
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view serie-diaria >/dev/null 2>&1 || \
+            gh release create serie-diaria --title "Sèrie diària completa" \
+              --notes "Pluja diària (00–24 UTC) de tots els dies, recalculada amb la calibració actual, en un sol NetCDF. Format descrit a eines/serie_diaria.py. Es regenera amb el workflow 'Sèrie diària completa (NetCDF)'."
+          gh release upload serie-diaria serie_diaria_plujacat.nc serie.log --clobber
+          echo "✅ Pujat a la Release serie-diaria" >> "$GITHUB_STEP_SUMMARY"
