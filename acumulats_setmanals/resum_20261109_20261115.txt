@@ -1,0 +1,9 @@
+RESUM SETMANAL: 2026-11-09 a 2026-11-15
+--------------------------------------------------
+20261109: PLUJA      -> Vàlid: Boí (2.537 m) (9.7 mm)
+20261110: PLUJA      -> Vàlid: Boí (2.537 m) (20.0 mm)
+20261111: PLUJA      -> Vàlid: Espot (2.519 m) (32.0 mm)
+20261112: PLUJA      -> Vàlid: Santuari de Queralt (42.3 mm)
+20261113: PLUJA      -> Vàlid: Lac Redon (2.245 m) (6.6 mm)
+20261114: PLUJA      -> Vàlid: Ulldecona - els Valentins (45.9 mm)
+20261115: PLUJA      -> Vàlid: Montsec d'Ares (1.571 m) (1.6 mm)
