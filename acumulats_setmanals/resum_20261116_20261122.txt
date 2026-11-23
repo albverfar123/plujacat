@@ -1,0 +1,9 @@
+RESUM SETMANAL: 2026-11-16 a 2026-11-22
+--------------------------------------------------
+20261116: ANTICICLÓ  -> Màxim: Lac Redon (2.245 m) (0.3 mm)
+20261117: PLUJA      -> Vàlid: Lac Redon (2.245 m) (2.1 mm)
+20261118: PLUJA      -> Vàlid: Espot (2.519 m) (20.4 mm)
+20261119: PLUJA      -> Vàlid: Batea (9.1 mm)
+20261120: ANTICICLÓ  -> Màxim: Sant Joan de les Abadesses (0.1 mm)
+20261121: PLUJA      -> Vàlid: Espot (2.519 m) (5.1 mm)
+20261122: PLUJA      -> Vàlid: Certascan (2.398 m) (6.1 mm)
